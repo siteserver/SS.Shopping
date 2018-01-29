@@ -1,9 +1,7 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace SS.Shopping.Model
 {
-    [JsonObject(MemberSerialization.OptOut)]
     public class CartInfo
     {
         public int Id { get; set; }

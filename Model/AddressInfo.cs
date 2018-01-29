@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-
-namespace SS.Shopping.Model
+﻿namespace SS.Shopping.Model
 {
-    [JsonObject(MemberSerialization.OptOut)]
     public class AddressInfo
     {
         public int Id { get; set; }
