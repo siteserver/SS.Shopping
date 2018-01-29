@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{61D25695-D0E3-4EAC-BB11-507EE5B94DA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SS.Shopping</RootNamespace>
+    <AssemblyName>SS.Shopping</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SiteServer.Plugin, Version=1.2.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SiteServer.Plugin.1.2.21-beta\lib\net45\SiteServer.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="SS.Payment, Version=1.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SS.Payment.1.1.5-beta\lib\net461\SS.Payment.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ThoughtWorks.QRCode, Version=1.0.4778.30637, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ThoughtWorks.QRCode.1.1.0\lib\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\SqlPager.cs" />
+    <Compile Include="Core\CacheUtils.cs" />
+    <Compile Include="Model\AreaInfo.cs" />
+    <Compile Include="Model\ConfigInfo.cs" />
+    <Compile Include="Model\DeliveryInfo.cs" />
+    <Compile Include="Model\AddressInfo.cs" />
+    <Compile Include="Model\Enums.cs" />
+    <Compile Include="Model\OrderInfo.cs" />
+    <Compile Include="Pages\PageDeliveryAdd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\PageOrder.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\PageDelivery.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Parse\StlShoppingOrders.cs" />
+    <Compile Include="Parse\StlShoppingOrder.cs" />
+    <Compile Include="Parse\StlShoppingPaySuccess.cs" />
+    <Compile Include="Parse\StlShoppingPay.cs" />
+    <Compile Include="Parse\StlShoppingCart.cs" />
+    <Compile Include="Parse\StlShoppingAddSuccess.cs" />
+    <Compile Include="Parse\StlShoppingAdd.cs" />
+    <Compile Include="Core\Utils.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Model\CartInfo.cs" />
+    <Compile Include="Pages\PageSettings.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\AreaDao.cs" />
+    <Compile Include="Provider\DeliveryDao.cs" />
+    <Compile Include="Provider\AddressDao.cs" />
+    <Compile Include="Provider\OrderDao.cs" />
+    <Compile Include="Provider\CartDao.cs" />
+    <Compile Include="Provider\Dao.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="plugin.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="logo.png" />
+    <Content Include="pageIntegrationPay.aspx" />
+    <Content Include="pageRecords.aspx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此项目引用这台计算机上缺少的 NuGet 程序包。使用 NuGet 程序包还原可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+  </Target>
+</Project>

@@ -1,0 +1,158 @@
+<!--
+	作者：282885521@qq.com
+	时间：2017-11-7
+	描述：
+-->
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<title>订单内容</title>
+		<link rel="stylesheet" type="text/css" href="css/other_public.min.css" />
+	</head>
+
+	<body class="body_bg">
+		<div class="wrap other_wrap3">
+			<div class="w1060">
+				<div class="order-content order-cont-other">
+					<div class="order-h3">
+						订单内容
+						<a href="#" class="go-pay">继续支付</a>
+					</div>
+					<div class="order-table">
+						<div class="o-t-title">
+							<div class="o-t-name">商品名称</div>
+							<div class="o-t-price">商品单价</div>
+							<div class="o-t-num">商品数量</div>
+							<div class="o-t-total">商品总价</div>
+						</div>
+						<div class="o-t-list">
+							<div class="o-t-name">
+								<a href="#">
+									<div class="name-img">
+										<img src="../images/cart_img.jpg" />
+									</div>
+									<p> XX第5期</p>
+								</a>
+							</div>
+							<div class="o-t-price"><span>单价：</span>¥300.00</div>
+							<div class="o-t-num"><span>数量：</span>1</div>
+							<div class="o-t-total"><span>总价：</span>¥300.00</div>
+						</div>
+						<div class="o-t-list">
+							<div class="o-t-name">
+								<a href="#">
+									<div class="name-img">
+										<img src="../images/cart_img.jpg" />
+									</div>
+									<p> XX第5期</p>
+								</a>
+							</div>
+							<div class="o-t-price"><span>单价：</span>¥300.00</div>
+							<div class="o-t-num"><span>数量：</span>1</div>
+							<div class="o-t-total"><span>总价：</span>¥300.00</div>
+						</div>
+					</div>
+					<div class="order-h3">
+						订单内容
+					</div>
+					<div class="order-ul">
+						<ul>
+							<li><span>订单编号</span>
+								<p>1646161616</p>
+							</li>
+							<li><span>支付方式</span>
+								<p>微信支付</p>
+							</li>
+							<li><span>配送方式</span>
+								<p>平邮</p>
+							</li>
+							<li><span>下单时间</span>
+								<p>2017/11/5 20:11:19</p>
+							</li>
+						</ul>
+					</div>
+					<div class="order-h3">
+						收货人信息
+					</div>
+					<div class="order-ul">
+						<ul>
+							<li><span>收货人</span>
+								<p>黎明</p>
+							</li>
+							<li><span>地址</span>
+								<p>北京海淀四季青路七号院1号楼</p>
+							</li>
+							<li><span>联系方式</span>
+								<p>18210759617</p>
+							</li>
+							<li><span>电子邮件</span>
+								<p>272656684@qq.com</p>
+							</li>
+						</ul>
+					</div>
+					<div class="order-h3">
+						发票信息
+					</div>
+					<div class="order-ul">
+						<ul>
+							<li><span>发票类型</span>
+								<p>电子发票</p>
+							</li>
+							<li><span>发票抬头</span>
+								<p>个 人</p>
+							</li>
+							<li><span>发票内容</span>
+								<p>明 细</p>
+							</li>
+						</ul>
+					</div>
+					<div class="order-h3">
+						订单备注
+					</div>
+					<div class="order-textarea">
+						无
+					</div>
+					<div class="order-h3">
+						结算信息
+					</div>
+					<div class="order-ul order-p">
+						<ul>
+							<li><span>商品金额</span>
+								<p>
+									204.10元+ 运费：0.00元= 订单总金额：<b>104.10</b>元
+								</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/public.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//bn宽度适应计算
+			function public_resize() {
+				var win_width = $(window).width();
+				if(win_width > 768) {
+					$(".index_bn").css("margin-left", (win_width - 1425) / 2);
+				} else {
+					$(".index_bn").css("margin-left", 0);
+				}
+			}
+			public_resize();
+			$(window).resize(function() {
+				public_resize();
+			});
+			//模拟加载
+			$(".m_pages").click(function() {
+				$(".m_load").addClass("hidden");
+				$(".m_loaded").removeClass("hidden");
+			})
+		</script>
+	</body>
+
+</html>

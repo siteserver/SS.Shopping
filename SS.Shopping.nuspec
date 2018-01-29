@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SS.Shopping</id>
+    <version>$version$</version>
+    <title>SiteServer CMS 购物插件</title>
+    <authors>SiteServer CMS</authors>
+    <owners>siteserver</owners>
+    <licenseUrl>https://github.com/siteserver/SS.Shopping/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/siteserver/SS.Shopping</projectUrl>
+    <iconUrl>https://github.com/siteserver/SS.Shopping/raw/master/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SiteServer CMS 购物插件</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>SiteServer CMS Shopping Plugin</tags>
+  </metadata>
+</package>
