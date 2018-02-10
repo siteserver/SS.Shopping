@@ -78,58 +78,58 @@ namespace SS.Shopping.Parse
             int count = 1;
             var successUrl = string.Empty;
 
-            foreach (var attriName in context.Attributes.Keys)
+            foreach (var attriName in context.StlElementAttributes.Keys)
             {
-                var value = context.Attributes[attriName];
+                var value = context.StlElementAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ProductId)))
                 {
-                    productId = Main.ParseApi.ParseAttributeValue(value, context);
+                    productId = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ProductName)))
                 {
-                    productName = Main.ParseApi.ParseAttributeValue(value, context);
+                    productName = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ImageUrl)))
                 {
-                    imageUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    imageUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.LinkUrl)))
                 {
-                    linkUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    linkUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.Fee)))
                 {
-                    value = Main.ParseApi.ParseAttributeValue(value, context);
+                    value = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                     decimal.TryParse(value, out fee);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.IsDelivery)))
                 {
-                    value = Main.ParseApi.ParseAttributeValue(value, context);
+                    value = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                     bool.TryParse(value, out isDelivery);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.Count)))
                 {
-                    value = Main.ParseApi.ParseAttributeValue(value, context);
+                    value = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                     int.TryParse(value, out count);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeSuccessUrl))
                 {
-                    successUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    successUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             var stlAnchor = new HtmlAnchor();
 
-            foreach (var attributeName in context.Attributes.Keys)
+            foreach (var attributeName in context.StlElementAttributes.Keys)
             {
-                stlAnchor.Attributes.Add(attributeName, context.Attributes[attributeName]);
+                stlAnchor.Attributes.Add(attributeName, context.StlElementAttributes[attributeName]);
             }
 
-            stlAnchor.InnerHtml = Main.ParseApi.ParseInnerXml(context.InnerXml, context);
+            stlAnchor.InnerHtml = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
             stlAnchor.HRef = "javascript:;";
 
-            var jqueryUrl = Main.FilesApi.GetPluginUrl("assets/js/jquery.min.js");
-            var apiUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiAdd));
+            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var apiUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiAdd));
 
             var script = $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>

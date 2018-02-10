@@ -25,19 +25,19 @@ namespace SS.Shopping.Parse
         {
             var orderUrl = string.Empty;
 
-            foreach (var attriName in context.Attributes.Keys)
+            foreach (var attriName in context.StlElementAttributes.Keys)
             {
-                var value = context.Attributes[attriName];
+                var value = context.StlElementAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributeOrderUrl))
                 {
-                    orderUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    orderUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             string template;
-            if (!string.IsNullOrEmpty(context.InnerXml))
+            if (!string.IsNullOrEmpty(context.StlElementInnerXml))
             {
-                template = Main.ParseApi.ParseInnerXml(context.InnerXml, context);
+                template = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
             }
             else
             {
@@ -72,10 +72,10 @@ namespace SS.Shopping.Parse
 
             var elementId = "el-" + Guid.NewGuid();
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
-            var jqueryUrl = Main.FilesApi.GetPluginUrl("assets/js/jquery.min.js");
-            var vueUrl = Main.FilesApi.GetPluginUrl("assets/js/vue.min.js");
-            var baseCssUrl = Main.FilesApi.GetPluginUrl("assets/css/base.css");
-            var apiGetUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiPaySuccessGet));
+            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
+            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
+            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPaySuccessGet));
 
             return $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>

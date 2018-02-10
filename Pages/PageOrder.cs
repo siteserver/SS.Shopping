@@ -48,7 +48,7 @@ namespace SS.Shopping.Pages
 
         public static string GetRedirectUrl(int siteId, bool isPaied, string state, string keyword)
         {
-            return Main.FilesApi.GetPluginUrl($"{nameof(PageOrder)}.aspx?siteId={siteId}&isPaied={isPaied}&state={state}&keyword={keyword}");
+            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageOrder)}.aspx?siteId={siteId}&isPaied={isPaied}&state={state}&keyword={keyword}");
         }
 
 	    public void Page_Load(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace SS.Shopping.Pages
             _state = Request.QueryString["state"];
             _keyword = Request.QueryString["keyword"];
 
-            if (!Main.AdminApi.IsSiteAuthorized(_siteId))
+            if (!Main.Instance.AdminApi.IsSiteAuthorized(_siteId))
 	        {
 	            Response.Write("<h1>未授权访问</h1>");
 	            Response.End();

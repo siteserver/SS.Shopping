@@ -159,13 +159,13 @@ namespace SS.Shopping.Parse
             var successUrl = context.GetPostString("successUrl");
             if (string.IsNullOrEmpty(successUrl))
             {
-                successUrl = Main.FilesApi.GetSiteUrl(siteId);
+                successUrl = Main.Instance.FilesApi.GetSiteUrl(siteId);
             }
 
             var guid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
             var paymentApi = new PaymentApi(siteId);
 
-            var siteInfo = Main.SiteApi.GetSiteInfo(siteId);
+            var siteInfo = Main.Instance.SiteApi.GetSiteInfo(siteId);
 
             var addressInfo = Main.AddressDao.GetAddressInfo(addressId);
             var orderInfo = new OrderInfo
@@ -204,10 +204,10 @@ namespace SS.Shopping.Parse
             }
             if (channel == "weixin")
             {
-                var notifyUrl = Main.FilesApi.GetApiHttpUrl(nameof(ApiPayWeixinNotify), orderNo);
+                var notifyUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayWeixinNotify), orderNo);
                 var url = HttpUtility.UrlEncode(paymentApi.ChargeByWeixin(siteInfo.SiteName, amount, orderNo, notifyUrl));
                 var qrCodeUrl =
-                    $"{Main.FilesApi.GetApiHttpUrl(nameof(ApiPayQrCode))}?qrcode={url}";
+                    $"{Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayQrCode))}?qrcode={url}";
                 return new
                 {
                     qrCodeUrl,
@@ -287,41 +287,41 @@ namespace SS.Shopping.Parse
             var successUrl = string.Empty;
             var weixinName = string.Empty;
 
-            foreach (var attriName in context.Attributes.Keys)
+            foreach (var attriName in context.StlElementAttributes.Keys)
             {
-                var value = context.Attributes[attriName];
+                var value = context.StlElementAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributeSuccessUrl))
                 {
-                    successUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    successUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeWeixinName))
                 {
-                    weixinName = Main.ParseApi.ParseAttributeValue(value, context);
+                    weixinName = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             var elementId = "el-" + Guid.NewGuid();
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
 
-            var jqueryUrl = Main.FilesApi.GetPluginUrl("assets/js/jquery.min.js");
-            var vueUrl = Main.FilesApi.GetPluginUrl("assets/js/vue.min.js");
-            var deviceUrl = Main.FilesApi.GetPluginUrl("assets/js/device.min.js");
-            var baseCssUrl = Main.FilesApi.GetPluginUrl("assets/css/base.css");
-            var locationCssUrl = Main.FilesApi.GetPluginUrl("assets/css/location.css");
-            var locationJsUrl = Main.FilesApi.GetPluginUrl("assets/js/location.js");
-            var apiGetUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiPayGet));
-            var apiSaveAddressUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiPaySaveAddress));
-            var apiRemoveAddressUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiPayRemoveAddress));
-            var apiSetAddressAndDelivery = Main.FilesApi.GetApiJsonUrl(nameof(ApiPaySetAddressAndDelivery));
-            var apiPayUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiPay));
-            var apiWeixinIntervalUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiPayWeixinInterval));
+            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
+            var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
+            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
+            var locationCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/location.css");
+            var locationJsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/location.js");
+            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayGet));
+            var apiSaveAddressUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPaySaveAddress));
+            var apiRemoveAddressUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayRemoveAddress));
+            var apiSetAddressAndDelivery = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPaySetAddressAndDelivery));
+            var apiPayUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPay));
+            var apiWeixinIntervalUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayWeixinInterval));
 
             var paymentApi = new PaymentApi(context.SiteId);
 
             string template;
-            if(!string.IsNullOrEmpty(context.InnerXml))
+            if(!string.IsNullOrEmpty(context.StlElementInnerXml))
             {
-                template = Main.ParseApi.ParseInnerXml(context.InnerXml, context);
+                template = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
             }
             else
             {

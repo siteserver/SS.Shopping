@@ -51,29 +51,29 @@ namespace SS.Shopping.Parse
             var cartUrl = string.Empty;
             var continueUrl = string.Empty;
 
-            foreach (var attriName in context.Attributes.Keys)
+            foreach (var attriName in context.StlElementAttributes.Keys)
             {
-                var value = context.Attributes[attriName];
+                var value = context.StlElementAttributes[attriName];
 
                 if (Utils.EqualsIgnoreCase(attriName, AttributeCartUrl))
                 {
-                    cartUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    cartUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeContinueUrl))
                 {
-                    continueUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    continueUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             if (string.IsNullOrEmpty(continueUrl))
             {
-                continueUrl = Main.FilesApi.GetSiteUrl(context.SiteId);
+                continueUrl = Main.Instance.FilesApi.GetSiteUrl(context.SiteId);
             }
 
             string template;
-            if (!string.IsNullOrEmpty(context.InnerXml))
+            if (!string.IsNullOrEmpty(context.StlElementInnerXml))
             {
-                template = Main.ParseApi.ParseInnerXml(context.InnerXml, context);
+                template = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
             }
             else
             {
@@ -105,8 +105,8 @@ namespace SS.Shopping.Parse
 ";
             }
 
-            var jqueryUrl = Main.FilesApi.GetPluginUrl("assets/js/jquery.min.js");
-            var apiUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiAddSuccessGet));
+            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var apiUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiAddSuccessGet));
 
             return $@"
 {template}

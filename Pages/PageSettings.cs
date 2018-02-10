@@ -19,14 +19,14 @@ namespace SS.Shopping.Pages
         {
             _siteId = Utils.ParseInt(Request.QueryString["siteId"]);
 
-            if (!Main.AdminApi.IsSiteAuthorized(_siteId))
+            if (!Main.Instance.AdminApi.IsSiteAuthorized(_siteId))
             {
                 HttpContext.Current.Response.Write("<h1>未授权访问</h1>");
                 HttpContext.Current.Response.End();
                 return;
             }
 
-            _configInfo = Main.GetConfigInfo(_siteId);
+            _configInfo = Main.Instance.GetConfigInfo(_siteId);
 
             if (IsPostBack) return;
 
@@ -39,7 +39,7 @@ namespace SS.Shopping.Pages
 
             _configInfo.IsForceLogin = Convert.ToBoolean(DdlIsForceLogin.SelectedValue);
 
-            Main.ConfigApi.SetConfig(_siteId, _configInfo);
+            Main.Instance.ConfigApi.SetConfig(_siteId, _configInfo);
             LtlMessage.Text = Utils.GetMessageHtml("购物设置修改成功！", true);
         }
     }

@@ -34,7 +34,7 @@ namespace SS.Shopping.Parse
                 totalFee += cartInfo.Fee * cartInfo.Count;
             }
 
-            var configInfo = Main.ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
+            var configInfo = Main.Instance.ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
 
             return new
             {
@@ -66,16 +66,16 @@ namespace SS.Shopping.Parse
             var payUrl = string.Empty;
             var loginUrl = string.Empty;
 
-            foreach (var attriName in context.Attributes.Keys)
+            foreach (var attriName in context.StlElementAttributes.Keys)
             {
-                var value = context.Attributes[attriName];
+                var value = context.StlElementAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributePayUrl))
                 {
-                    payUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    payUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeLoginUrl))
                 {
-                    loginUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    loginUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
             }
             if (string.IsNullOrEmpty(loginUrl))
@@ -83,12 +83,12 @@ namespace SS.Shopping.Parse
                 loginUrl = "/home/#/login";
             }
 
-            var currentUrl = Main.ParseApi.GetCurrentUrl(context);
+            var currentUrl = Main.Instance.ParseApi.GetCurrentUrl(context);
             var loginToCartUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(currentUrl)}";
             var loginToPayUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(payUrl)}";
 
-            var html = Main.ParseApi.ParseInnerXml(context.InnerXml, context);
-            if (string.IsNullOrEmpty(context.InnerXml))
+            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
+            if (string.IsNullOrEmpty(context.StlElementInnerXml))
             {
                 html = $@"
 <div class=""cart"">
@@ -132,10 +132,10 @@ namespace SS.Shopping.Parse
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
             html = $@"<div id=""{elementId}"">{html}</div>";
 
-            var jqueryUrl = Main.FilesApi.GetPluginUrl("assets/js/jquery.min.js");
-            var vueUrl = Main.FilesApi.GetPluginUrl("assets/js/vue.min.js");
-            var apiGetUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiCartGet));
-            var apiSaveUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiCartSave));
+            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
+            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiCartGet));
+            var apiSaveUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiCartSave));
 
             html += $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>

@@ -15,14 +15,14 @@ namespace SS.Shopping.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return Main.FilesApi.GetPluginUrl($"{nameof(PageDelivery)}.aspx?siteId={siteId}");
+            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageDelivery)}.aspx?siteId={siteId}");
         }
 
         public void Page_Load(object sender, EventArgs e)
         {
             _siteId = Utils.ParseInt(Request.QueryString["siteId"]);
 
-            if (!Main.AdminApi.IsSiteAuthorized(_siteId))
+            if (!Main.Instance.AdminApi.IsSiteAuthorized(_siteId))
             {
                 Response.Write("<h1>未授权访问</h1>");
                 Response.End();

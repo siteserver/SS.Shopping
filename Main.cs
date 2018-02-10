@@ -9,17 +9,8 @@ using SS.Shopping.Provider;
 
 namespace SS.Shopping
 {
-    public class Main : IPlugin
+    public class Main : PluginBase
     {
-        public static DatabaseType DatabaseType { get; private set; }
-        public static string ConnectionString { get; private set; }
-        public static IDataApi DataApi { get; private set; }
-        public static IAdminApi AdminApi { get; private set; }
-        public static IFilesApi FilesApi { get; private set; }
-        public static IParseApi ParseApi { get; private set; }
-        public static IConfigApi ConfigApi { get; private set; }
-        public static ISiteApi SiteApi { get; private set; }
-
         public static AddressDao AddressDao { get; private set; }
 
         public static AreaDao AreaDao { get; private set; }
@@ -32,33 +23,28 @@ namespace SS.Shopping
 
         public static OrderDao OrderDao { get; private set; }
 
-        private static readonly Dictionary<int, ConfigInfo> ConfigInfoDict = new Dictionary<int, ConfigInfo>();
+        private readonly Dictionary<int, ConfigInfo> _configInfoDict = new Dictionary<int, ConfigInfo>();
 
-        public static ConfigInfo GetConfigInfo(int siteId)
+        public ConfigInfo GetConfigInfo(int siteId)
         {
-            if (!ConfigInfoDict.ContainsKey(siteId))
+            if (!_configInfoDict.ContainsKey(siteId))
             {
-                ConfigInfoDict[siteId] = ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
+                _configInfoDict[siteId] = ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
             }
-            return ConfigInfoDict[siteId];
+            return _configInfoDict[siteId];
         }
 
-        public void Startup(IContext context, IService service)
+        internal static Main Instance { get; private set; }
+
+        public override void Startup(IService service)
         {
-            DatabaseType = context.Environment.DatabaseType;
-            ConnectionString = context.Environment.ConnectionString;
-            DataApi = context.DataApi;
-            AdminApi = context.AdminApi;
-            FilesApi = context.FilesApi;
-            ParseApi = context.ParseApi;
-            ConfigApi = context.ConfigApi;
-            SiteApi = context.SiteApi;
+            Instance = this;
 
             Dao = new Dao(ConnectionString, DataApi);
             AddressDao = new AddressDao(ConnectionString, DataApi);
             AreaDao = new AreaDao(ConnectionString, DataApi);
             CartDao = new CartDao(ConnectionString, DataApi);
-            DeliveryDao = new DeliveryDao(context.Environment.DatabaseType, ConnectionString, DataApi);
+            DeliveryDao = new DeliveryDao(DatabaseType, ConnectionString, DataApi);
             OrderDao = new OrderDao(ConnectionString, DataApi);
 
             service.AddSiteMenu(siteId => new Menu
@@ -112,74 +98,78 @@ namespace SS.Shopping
 
             service.ApiPost += (sender, args) =>
             {
-                if (!string.IsNullOrEmpty(args.Name) && !string.IsNullOrEmpty(args.Id))
+                var request = args.Request;
+                var action = args.Action;
+                var id = args.Id;
+
+                if (!string.IsNullOrEmpty(action) && !string.IsNullOrEmpty(id))
                 {
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPayWeixinNotify)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayWeixinNotify)))
                     {
-                        return StlShoppingPay.ApiPayWeixinNotify(args.Request, args.Id);
+                        return StlShoppingPay.ApiPayWeixinNotify(request, id);
                     }
                 }
-                if (!string.IsNullOrEmpty(args.Name))
+                else if (!string.IsNullOrEmpty(action))
                 {
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingAdd.ApiAdd)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingAdd.ApiAdd)))
                     {
-                        return StlShoppingAdd.ApiAdd(args.Request);
+                        return StlShoppingAdd.ApiAdd(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingAddSuccess.ApiAddSuccessGet)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingAddSuccess.ApiAddSuccessGet)))
                     {
-                        return StlShoppingAddSuccess.ApiAddSuccessGet(args.Request);
+                        return StlShoppingAddSuccess.ApiAddSuccessGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingCart.ApiCartGet)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingCart.ApiCartGet)))
                     {
-                        return StlShoppingCart.ApiCartGet(args.Request);
+                        return StlShoppingCart.ApiCartGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingCart.ApiCartSave)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingCart.ApiCartSave)))
                     {
-                        return StlShoppingCart.ApiCartSave(args.Request);
+                        return StlShoppingCart.ApiCartSave(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingOrder.ApiOrderGet)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrder.ApiOrderGet)))
                     {
-                        return StlShoppingOrder.ApiOrderGet(args.Request);
+                        return StlShoppingOrder.ApiOrderGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingOrders.ApiOrdersGet)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrders.ApiOrdersGet)))
                     {
-                        return StlShoppingOrders.ApiOrdersGet(args.Request);
+                        return StlShoppingOrders.ApiOrdersGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingOrders.ApiOrdersRemove)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrders.ApiOrdersRemove)))
                     {
-                        return StlShoppingOrders.ApiOrdersRemove(args.Request);
+                        return StlShoppingOrders.ApiOrdersRemove(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingOrders.ApiOrdersPay)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrders.ApiOrdersPay)))
                     {
-                        return StlShoppingOrders.ApiOrdersPay(args.Request);
+                        return StlShoppingOrders.ApiOrdersPay(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPayGet)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayGet)))
                     {
-                        return StlShoppingPay.ApiPayGet(args.Request);
+                        return StlShoppingPay.ApiPayGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPaySaveAddress)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPaySaveAddress)))
                     {
-                        return StlShoppingPay.ApiPaySaveAddress(args.Request);
+                        return StlShoppingPay.ApiPaySaveAddress(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPayRemoveAddress)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayRemoveAddress)))
                     {
-                        return StlShoppingPay.ApiPayRemoveAddress(args.Request);
+                        return StlShoppingPay.ApiPayRemoveAddress(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPaySetAddressAndDelivery)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPaySetAddressAndDelivery)))
                     {
-                        return StlShoppingPay.ApiPaySetAddressAndDelivery(args.Request);
+                        return StlShoppingPay.ApiPaySetAddressAndDelivery(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPay)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPay)))
                     {
-                        return StlShoppingPay.ApiPay(args.Request);
+                        return StlShoppingPay.ApiPay(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPayWeixinInterval)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayWeixinInterval)))
                     {
-                        return StlShoppingPay.ApiPayWeixinInterval(args.Request);
+                        return StlShoppingPay.ApiPayWeixinInterval(request);
                     }
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPaySuccess.ApiPaySuccessGet)))
+                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPaySuccess.ApiPaySuccessGet)))
                     {
-                        return StlShoppingPaySuccess.ApiPaySuccessGet(args.Request);
+                        return StlShoppingPaySuccess.ApiPaySuccessGet(request);
                     }
                 }
 
@@ -188,9 +178,9 @@ namespace SS.Shopping
 
             service.ApiGet += (sender, args) =>
             {
-                if (!string.IsNullOrEmpty(args.Name))
+                if (!string.IsNullOrEmpty(args.Action))
                 {
-                    if (Utils.EqualsIgnoreCase(args.Name, nameof(StlShoppingPay.ApiPayQrCode)))
+                    if (Utils.EqualsIgnoreCase(args.Action, nameof(StlShoppingPay.ApiPayQrCode)))
                     {
                         return StlShoppingPay.ApiPayQrCode(args.Request);
                     }

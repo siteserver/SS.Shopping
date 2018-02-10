@@ -30,7 +30,7 @@ namespace SS.Shopping.Pages
 
         public static string GetRedirectUrl(int siteId, int deliveryId)
         {
-            return Main.FilesApi.GetPluginUrl($"{nameof(PageDeliveryAdd)}.aspx?siteId={siteId}&deliveryId={deliveryId}");
+            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageDeliveryAdd)}.aspx?siteId={siteId}&deliveryId={deliveryId}");
         }
 
         public void Page_Load(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace SS.Shopping.Pages
             _deliveryId = Utils.ParseInt(Request.QueryString["deliveryId"]);
             _areaId = Utils.ParseInt(Request.QueryString["areaId"]);
 
-            if (!Main.AdminApi.IsSiteAuthorized(_siteId))
+            if (!Main.Instance.AdminApi.IsSiteAuthorized(_siteId))
             {
                 Response.Write("<h1>未授权访问</h1>");
                 Response.End();

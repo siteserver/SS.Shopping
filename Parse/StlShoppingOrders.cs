@@ -67,10 +67,10 @@ namespace SS.Shopping.Parse
             var successUrl = context.GetPostString("successUrl");
             if (string.IsNullOrEmpty(successUrl))
             {
-                successUrl = Main.FilesApi.GetSiteUrl(siteId);
+                successUrl = Main.Instance.FilesApi.GetSiteUrl(siteId);
             }
 
-            var siteInfo = Main.SiteApi.GetSiteInfo(siteId);
+            var siteInfo = Main.Instance.SiteApi.GetSiteInfo(siteId);
             var orderInfo = Main.OrderDao.GetOrderInfo(orderId);
             orderInfo.Channel = channel;
 
@@ -87,10 +87,10 @@ namespace SS.Shopping.Parse
             }
             if (channel == "weixin")
             {
-                var notifyUrl = Main.FilesApi.GetApiHttpUrl(nameof(StlShoppingPay.ApiPayWeixinNotify), orderNo);
+                var notifyUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayWeixinNotify), orderNo);
                 var url = HttpUtility.UrlEncode(paymentApi.ChargeByWeixin(siteInfo.SiteName, amount, orderNo, notifyUrl));
                 var qrCodeUrl =
-                    $"{Main.FilesApi.GetApiHttpUrl(nameof(StlShoppingPay.ApiPayQrCode))}?qrcode={url}";
+                    $"{Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayQrCode))}?qrcode={url}";
                 return new
                 {
                     qrCodeUrl,
@@ -111,27 +111,27 @@ namespace SS.Shopping.Parse
             var orderUrl = string.Empty;
             var weixinName = string.Empty;
 
-            foreach (var attriName in context.Attributes.Keys)
+            foreach (var attriName in context.StlElementAttributes.Keys)
             {
-                var value = context.Attributes[attriName];
+                var value = context.StlElementAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributeSuccessUrl))
                 {
-                    successUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    successUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeOrderUrl))
                 {
-                    orderUrl = Main.ParseApi.ParseAttributeValue(value, context);
+                    orderUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeWeixinName))
                 {
-                    weixinName = Main.ParseApi.ParseAttributeValue(value, context);
+                    weixinName = Main.Instance.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             var paymentApi = new PaymentApi(context.SiteId);
 
-            var html = Main.ParseApi.ParseInnerXml(context.InnerXml, context);
-            if (string.IsNullOrEmpty(context.InnerXml))
+            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
+            if (string.IsNullOrEmpty(context.StlElementInnerXml))
             {
                 if (!string.IsNullOrEmpty(weixinName))
                 {
@@ -271,15 +271,15 @@ namespace SS.Shopping.Parse
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
             html = $@"<div id=""{elementId}"" class=""shopping_order"">{html}</div>";
 
-            var jqueryUrl = Main.FilesApi.GetPluginUrl("assets/js/jquery.min.js");
-            var vueUrl = Main.FilesApi.GetPluginUrl("assets/js/vue.min.js");
-            var deviceUrl = Main.FilesApi.GetPluginUrl("assets/js/device.min.js");
-            var baseCssUrl = Main.FilesApi.GetPluginUrl("assets/css/base.css");
-            var orderCssUrl = Main.FilesApi.GetPluginUrl("assets/css/order.css");
-            var apiGetUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiOrdersGet));
-            var apiRemoveOrderUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiOrdersRemove));
-            var apiPayUrl = Main.FilesApi.GetApiJsonUrl(nameof(ApiOrdersPay));
-            var apiWeixinIntervalUrl = Main.FilesApi.GetApiJsonUrl(nameof(StlShoppingPay.ApiPayWeixinInterval));
+            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
+            var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
+            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
+            var orderCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/order.css");
+            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersGet));
+            var apiRemoveOrderUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersRemove));
+            var apiPayUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersPay));
+            var apiWeixinIntervalUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayWeixinInterval));
 
             html += $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
