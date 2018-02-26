@@ -32,7 +32,7 @@ namespace SS.Shopping.Parse
 
             var cartInfo = new CartInfo
             {
-                PublishmentSystemId = siteId,
+                SiteId = siteId,
                 UserName = context.UserName,
                 SessionId = sessionId,
                 ProductId = productId,

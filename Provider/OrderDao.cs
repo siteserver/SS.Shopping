@@ -28,7 +28,7 @@ namespace SS.Shopping.Provider
             },
             new TableColumn
             {
-                AttributeName = nameof(OrderInfo.PublishmentSystemId),
+                AttributeName = nameof(OrderInfo.SiteId),
                 DataType = DataType.Integer
             },
             new TableColumn
@@ -127,7 +127,7 @@ namespace SS.Shopping.Provider
         public int Insert(OrderInfo orderInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
-           ({nameof(OrderInfo.PublishmentSystemId)}, 
+           ({nameof(OrderInfo.SiteId)}, 
             {nameof(OrderInfo.Guid)}, 
             {nameof(OrderInfo.UserName)}, 
             {nameof(OrderInfo.SessionId)}, 
@@ -145,7 +145,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.State)}, 
             {nameof(OrderInfo.AddDate)})
      VALUES
-           (@{nameof(OrderInfo.PublishmentSystemId)}, 
+           (@{nameof(OrderInfo.SiteId)}, 
             @{nameof(OrderInfo.Guid)}, 
             @{nameof(OrderInfo.UserName)}, 
             @{nameof(OrderInfo.SessionId)}, 
@@ -165,7 +165,7 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(orderInfo.PublishmentSystemId), orderInfo.PublishmentSystemId),
+                _helper.GetParameter(nameof(orderInfo.SiteId), orderInfo.SiteId),
                 _helper.GetParameter(nameof(orderInfo.Guid), orderInfo.Guid),
                 _helper.GetParameter(nameof(orderInfo.UserName), orderInfo.UserName),
                 _helper.GetParameter(nameof(orderInfo.SessionId), orderInfo.SessionId),
@@ -190,7 +190,7 @@ namespace SS.Shopping.Provider
         //public void Update(OrderInfo orderInfo)
         //{
         //    string sqlString = $@"UPDATE {TableName} SET
-        //        {nameof(OrderInfo.PublishmentSystemId)} = @{nameof(OrderInfo.PublishmentSystemId)}, 
+        //        {nameof(OrderInfo.SiteId)} = @{nameof(OrderInfo.SiteId)}, 
         //        {nameof(OrderInfo.UserName)} = @{nameof(OrderInfo.UserName)}, 
         //        {nameof(OrderInfo.SessionId)} = @{nameof(OrderInfo.SessionId)}, 
         //        {nameof(OrderInfo.RealName)} = @{nameof(OrderInfo.RealName)}, 
@@ -210,7 +210,7 @@ namespace SS.Shopping.Provider
 
         //    var parameters = new List<IDataParameter>
         //    {
-        //        _helper.GetParameter(nameof(orderInfo.PublishmentSystemId), orderInfo.PublishmentSystemId),
+        //        _helper.GetParameter(nameof(orderInfo.SiteId), orderInfo.SiteId),
         //        _helper.GetParameter(nameof(orderInfo.UserName), orderInfo.UserName),
         //        _helper.GetParameter(nameof(orderInfo.SessionId), orderInfo.SessionId),
         //        _helper.GetParameter(nameof(orderInfo.RealName), orderInfo.RealName),
@@ -325,7 +325,7 @@ namespace SS.Shopping.Provider
         //public string GetSelectStringByState(int siteId, string state)
         //{
         //    var sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
-        //    {nameof(OrderInfo.PublishmentSystemId)}, 
+        //    {nameof(OrderInfo.SiteId)}, 
         //    {nameof(OrderInfo.Guid)}, 
         //    {nameof(OrderInfo.UserName)}, 
         //    {nameof(OrderInfo.SessionId)}, 
@@ -342,7 +342,7 @@ namespace SS.Shopping.Provider
         //    {nameof(OrderInfo.IsPaied)}, 
         //    {nameof(OrderInfo.State)}, 
         //    {nameof(OrderInfo.AddDate)}
-        //    FROM {TableName} WHERE {nameof(OrderInfo.PublishmentSystemId)} = {siteId}";
+        //    FROM {TableName} WHERE {nameof(OrderInfo.SiteId)} = {siteId}";
         //    if (!string.IsNullOrEmpty(state))
         //    {
         //        state = Main.DataApi.FilterSql(state);
@@ -355,11 +355,11 @@ namespace SS.Shopping.Provider
 
         public int GetOrderCount(int siteId)
         {
-            string sqlString = $@"SELECT COUNT(*) FROM {TableName} WHERE {nameof(OrderInfo.PublishmentSystemId)} = @{nameof(OrderInfo.PublishmentSystemId)}";
+            string sqlString = $@"SELECT COUNT(*) FROM {TableName} WHERE {nameof(OrderInfo.SiteId)} = @{nameof(OrderInfo.SiteId)}";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(OrderInfo.PublishmentSystemId), siteId)
+                _helper.GetParameter(nameof(OrderInfo.SiteId), siteId)
             };
 
             return Main.Dao.GetIntResult(sqlString, parameters);
@@ -372,19 +372,19 @@ namespace SS.Shopping.Provider
             if (isPaied)
             {
                 sqlString = $@"SELECT COUNT(*) FROM {TableName} WHERE 
-                                {nameof(OrderInfo.PublishmentSystemId)} = @{nameof(OrderInfo.PublishmentSystemId)} AND
+                                {nameof(OrderInfo.SiteId)} = @{nameof(OrderInfo.SiteId)} AND
                                 {nameof(OrderInfo.IsPaied)} = 1";
             }
             else
             {
                 sqlString = $@"SELECT COUNT(*) FROM {TableName} WHERE 
-                                {nameof(OrderInfo.PublishmentSystemId)} = @{nameof(OrderInfo.PublishmentSystemId)} AND
+                                {nameof(OrderInfo.SiteId)} = @{nameof(OrderInfo.SiteId)} AND
                                 ({nameof(OrderInfo.IsPaied)} = 0 OR {nameof(OrderInfo.IsPaied)} IS NULL)";
             }
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.PublishmentSystemId), siteId)
+                _helper.GetParameter(nameof(OrderInfo.SiteId), siteId)
             };
 
             if (!string.IsNullOrEmpty(state))
@@ -399,7 +399,7 @@ namespace SS.Shopping.Provider
         public string GetSelectStringBySearch(int siteId, bool isPaied, string state, string keyword)
         {
             var sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
-            {nameof(OrderInfo.PublishmentSystemId)}, 
+            {nameof(OrderInfo.SiteId)}, 
             {nameof(OrderInfo.Guid)}, 
             {nameof(OrderInfo.UserName)}, 
             {nameof(OrderInfo.SessionId)}, 
@@ -416,7 +416,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.IsPaied)}, 
             {nameof(OrderInfo.State)}, 
             {nameof(OrderInfo.AddDate)}
-            FROM {TableName} WHERE {nameof(OrderInfo.PublishmentSystemId)} = {siteId}";
+            FROM {TableName} WHERE {nameof(OrderInfo.SiteId)} = {siteId}";
 
             if (isPaied)
             {
@@ -447,7 +447,7 @@ namespace SS.Shopping.Provider
             OrderInfo orderInfo = null;
 
             string sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
-            {nameof(OrderInfo.PublishmentSystemId)}, 
+            {nameof(OrderInfo.SiteId)}, 
             {nameof(OrderInfo.Guid)}, 
             {nameof(OrderInfo.UserName)}, 
             {nameof(OrderInfo.SessionId)}, 
@@ -483,7 +483,7 @@ namespace SS.Shopping.Provider
             OrderInfo orderInfo = null;
 
             string sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
-            {nameof(OrderInfo.PublishmentSystemId)}, 
+            {nameof(OrderInfo.SiteId)}, 
             {nameof(OrderInfo.Guid)}, 
             {nameof(OrderInfo.UserName)}, 
             {nameof(OrderInfo.SessionId)}, 
@@ -528,7 +528,7 @@ namespace SS.Shopping.Provider
             {
                 sqlString = $@"SELECT
                     {nameof(OrderInfo.Id)}, 
-                    {nameof(OrderInfo.PublishmentSystemId)}, 
+                    {nameof(OrderInfo.SiteId)}, 
                     {nameof(OrderInfo.Guid)}, 
                     {nameof(OrderInfo.UserName)}, 
                     {nameof(OrderInfo.SessionId)}, 
@@ -554,7 +554,7 @@ namespace SS.Shopping.Provider
             {
                 sqlString = $@"SELECT
                     {nameof(OrderInfo.Id)}, 
-                    {nameof(OrderInfo.PublishmentSystemId)}, 
+                    {nameof(OrderInfo.SiteId)}, 
                     {nameof(OrderInfo.Guid)}, 
                     {nameof(OrderInfo.UserName)}, 
                     {nameof(OrderInfo.SessionId)}, 
@@ -600,7 +600,7 @@ namespace SS.Shopping.Provider
             var list = new List<OrderInfo>();
 
             string sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
-            {nameof(OrderInfo.PublishmentSystemId)}, 
+            {nameof(OrderInfo.SiteId)}, 
             {nameof(OrderInfo.Guid)}, 
             {nameof(OrderInfo.UserName)}, 
             {nameof(OrderInfo.SessionId)}, 
@@ -653,7 +653,7 @@ namespace SS.Shopping.Provider
             var i = 0;
             orderInfo.Id = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
-            orderInfo.PublishmentSystemId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
+            orderInfo.SiteId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
             orderInfo.Guid = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;

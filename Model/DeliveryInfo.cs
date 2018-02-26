@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public int PublishmentSystemId { get; set; }
+        public int SiteId { get; set; }
 
         public string DeliveryName { get; set; }
 

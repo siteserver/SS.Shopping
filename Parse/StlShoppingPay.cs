@@ -170,7 +170,7 @@ namespace SS.Shopping.Parse
             var addressInfo = Main.AddressDao.GetAddressInfo(addressId);
             var orderInfo = new OrderInfo
             {
-                PublishmentSystemId = siteId,
+                SiteId = siteId,
                 Guid = guid,
                 AddDate = DateTime.Now,
                 Address = addressInfo.Address,

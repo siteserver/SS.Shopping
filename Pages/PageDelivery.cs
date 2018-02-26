@@ -66,7 +66,7 @@ namespace SS.Shopping.Pages
         {
             var deliveryInfo = new DeliveryInfo
             {
-                PublishmentSystemId = _siteId
+                SiteId = _siteId
             };
             deliveryInfo.Id = Main.DeliveryDao.Insert(deliveryInfo);
             Response.Redirect(PageDeliveryAdd.GetRedirectUrl(_siteId, deliveryInfo.Id));

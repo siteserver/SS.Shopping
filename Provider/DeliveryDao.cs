@@ -19,7 +19,7 @@ namespace SS.Shopping.Provider
             },
             new TableColumn
             {
-                AttributeName = nameof(DeliveryInfo.PublishmentSystemId),
+                AttributeName = nameof(DeliveryInfo.SiteId),
                 DataType = DataType.Integer
             },
             new TableColumn
@@ -75,7 +75,7 @@ namespace SS.Shopping.Provider
         public int Insert(DeliveryInfo deliveryInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
-           ({nameof(DeliveryInfo.PublishmentSystemId)},
+           ({nameof(DeliveryInfo.SiteId)},
             {nameof(DeliveryInfo.DeliveryName)}, 
             {nameof(DeliveryInfo.DeliveryType)}, 
             {nameof(DeliveryInfo.StartStandards)}, 
@@ -84,7 +84,7 @@ namespace SS.Shopping.Provider
             {nameof(DeliveryInfo.AddFees)},
             {nameof(DeliveryInfo.Taxis)})
      VALUES
-           (@{nameof(DeliveryInfo.PublishmentSystemId)}, 
+           (@{nameof(DeliveryInfo.SiteId)}, 
             @{nameof(DeliveryInfo.DeliveryName)}, 
             @{nameof(DeliveryInfo.DeliveryType)}, 
             @{nameof(DeliveryInfo.StartStandards)}, 
@@ -93,11 +93,11 @@ namespace SS.Shopping.Provider
             @{nameof(DeliveryInfo.AddFees)},
             @{nameof(DeliveryInfo.Taxis)})";
 
-            var taxis = GetMaxTaxis(deliveryInfo.PublishmentSystemId) + 1;
+            var taxis = GetMaxTaxis(deliveryInfo.SiteId) + 1;
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(deliveryInfo.PublishmentSystemId), deliveryInfo.PublishmentSystemId),
+                _helper.GetParameter(nameof(deliveryInfo.SiteId), deliveryInfo.SiteId),
                 _helper.GetParameter(nameof(deliveryInfo.DeliveryName), deliveryInfo.DeliveryName),
                 _helper.GetParameter(nameof(deliveryInfo.DeliveryType), deliveryInfo.DeliveryType),
                 _helper.GetParameter(nameof(deliveryInfo.StartStandards), deliveryInfo.StartStandards),
@@ -113,7 +113,7 @@ namespace SS.Shopping.Provider
         public void Update(DeliveryInfo deliveryInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
-                {nameof(DeliveryInfo.PublishmentSystemId)} = @{nameof(DeliveryInfo.PublishmentSystemId)}, 
+                {nameof(DeliveryInfo.SiteId)} = @{nameof(DeliveryInfo.SiteId)}, 
                 {nameof(DeliveryInfo.DeliveryName)} = @{nameof(DeliveryInfo.DeliveryName)}, 
                 {nameof(DeliveryInfo.DeliveryType)} = @{nameof(DeliveryInfo.DeliveryType)}, 
                 {nameof(DeliveryInfo.StartStandards)} = @{nameof(DeliveryInfo.StartStandards)}, 
@@ -124,7 +124,7 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(deliveryInfo.PublishmentSystemId), deliveryInfo.PublishmentSystemId),
+                _helper.GetParameter(nameof(deliveryInfo.SiteId), deliveryInfo.SiteId),
                 _helper.GetParameter(nameof(deliveryInfo.DeliveryName), deliveryInfo.DeliveryName),
                 _helper.GetParameter(nameof(deliveryInfo.DeliveryType), deliveryInfo.DeliveryType),
                 _helper.GetParameter(nameof(deliveryInfo.StartStandards), deliveryInfo.StartStandards),
@@ -160,7 +160,7 @@ namespace SS.Shopping.Provider
             var list = new List<DeliveryInfo>();
 
             string sqlString = $@"SELECT {nameof(DeliveryInfo.Id)}, 
-                {nameof(DeliveryInfo.PublishmentSystemId)}, 
+                {nameof(DeliveryInfo.SiteId)}, 
                 {nameof(DeliveryInfo.DeliveryName)}, 
                 {nameof(DeliveryInfo.DeliveryType)}, 
                 {nameof(DeliveryInfo.StartStandards)}, 
@@ -168,7 +168,7 @@ namespace SS.Shopping.Provider
                 {nameof(DeliveryInfo.AddStandards)}, 
                 {nameof(DeliveryInfo.AddFees)}, 
                 {nameof(DeliveryInfo.Taxis)}
-                FROM {TableName} WHERE {nameof(DeliveryInfo.PublishmentSystemId)} = {siteId} ORDER BY {nameof(DeliveryInfo.Taxis)} DESC";
+                FROM {TableName} WHERE {nameof(DeliveryInfo.SiteId)} = {siteId} ORDER BY {nameof(DeliveryInfo.Taxis)} DESC";
 
             using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
             {
@@ -187,7 +187,7 @@ namespace SS.Shopping.Provider
             DeliveryInfo deliveryInfo = null;
 
             string sqlString = $@"SELECT {nameof(DeliveryInfo.Id)}, 
-            {nameof(DeliveryInfo.PublishmentSystemId)}, 
+            {nameof(DeliveryInfo.SiteId)}, 
             {nameof(DeliveryInfo.DeliveryName)}, 
             {nameof(DeliveryInfo.DeliveryType)}, 
             {nameof(DeliveryInfo.StartStandards)}, 
@@ -211,7 +211,7 @@ namespace SS.Shopping.Provider
 
         public bool UpdateTaxisToUp(int siteId, int deliveryId)
         {
-            var sqlString = Utils.GetTopSqlString(_databaseType, TableName, "Id, Taxis", $"WHERE ((Taxis > (SELECT Taxis FROM {TableName} WHERE Id = {deliveryId})) AND PublishmentSystemId ={siteId}) ORDER BY Taxis", 1);
+            var sqlString = Utils.GetTopSqlString(_databaseType, TableName, "Id, Taxis", $"WHERE ((Taxis > (SELECT Taxis FROM {TableName} WHERE Id = {deliveryId})) AND SiteId ={siteId}) ORDER BY Taxis", 1);
 
             var higherId = 0;
             var higherTaxis = 0;
@@ -239,7 +239,7 @@ namespace SS.Shopping.Provider
 
         public bool UpdateTaxisToDown(int siteId, int deliveryId)
         {
-            var sqlString = Utils.GetTopSqlString(_databaseType, TableName, "Id, Taxis", $"WHERE ((Taxis < (SELECT Taxis FROM {TableName} WHERE (Id = {deliveryId}))) AND PublishmentSystemId = {siteId}) ORDER BY Taxis DESC", 1);
+            var sqlString = Utils.GetTopSqlString(_databaseType, TableName, "Id, Taxis", $"WHERE ((Taxis < (SELECT Taxis FROM {TableName} WHERE (Id = {deliveryId}))) AND SiteId = {siteId}) ORDER BY Taxis DESC", 1);
 
             var lowerId = 0;
             var lowerTaxis = 0;
@@ -268,7 +268,7 @@ namespace SS.Shopping.Provider
         private int GetMaxTaxis(int siteId)
         {
             string sqlString =
-                $"SELECT MAX(Taxis) FROM {TableName} WHERE {nameof(DeliveryInfo.PublishmentSystemId)} = {siteId}";
+                $"SELECT MAX(Taxis) FROM {TableName} WHERE {nameof(DeliveryInfo.SiteId)} = {siteId}";
             return Main.Dao.GetIntResult(sqlString);
         }
 
@@ -293,7 +293,7 @@ namespace SS.Shopping.Provider
             var i = 0;
             deliveryInfo.Id = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
-            deliveryInfo.PublishmentSystemId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
+            deliveryInfo.SiteId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
             deliveryInfo.DeliveryName = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;

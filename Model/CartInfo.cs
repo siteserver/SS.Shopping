@@ -6,7 +6,7 @@ namespace SS.Shopping.Model
     {
         public int Id { get; set; }
 
-        public int PublishmentSystemId { get; set; }
+        public int SiteId { get; set; }
 
         public int OrderId { get; set; }
 

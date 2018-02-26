@@ -28,7 +28,7 @@ namespace SS.Shopping.Provider
             },
             new TableColumn
             {
-                AttributeName = nameof(CartInfo.PublishmentSystemId),
+                AttributeName = nameof(CartInfo.SiteId),
                 DataType = DataType.Integer
             },
             new TableColumn
@@ -97,7 +97,7 @@ namespace SS.Shopping.Provider
         public int Insert(CartInfo cartInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
-           ({nameof(CartInfo.PublishmentSystemId)}, 
+           ({nameof(CartInfo.SiteId)}, 
             {nameof(CartInfo.OrderId)}, 
             {nameof(CartInfo.UserName)}, 
             {nameof(CartInfo.SessionId)}, 
@@ -110,7 +110,7 @@ namespace SS.Shopping.Provider
             {nameof(CartInfo.Count)}, 
             {nameof(CartInfo.AddDate)})
      VALUES
-           (@{nameof(CartInfo.PublishmentSystemId)}, 
+           (@{nameof(CartInfo.SiteId)}, 
             @{nameof(CartInfo.OrderId)}, 
             @{nameof(CartInfo.UserName)}, 
             @{nameof(CartInfo.SessionId)}, 
@@ -125,7 +125,7 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(cartInfo.PublishmentSystemId), cartInfo.PublishmentSystemId),
+                _helper.GetParameter(nameof(cartInfo.SiteId), cartInfo.SiteId),
                 _helper.GetParameter(nameof(cartInfo.OrderId), 0),
                 _helper.GetParameter(nameof(cartInfo.UserName), cartInfo.UserName),
                 _helper.GetParameter(nameof(cartInfo.SessionId), cartInfo.SessionId),
@@ -145,7 +145,7 @@ namespace SS.Shopping.Provider
         public void Update(CartInfo cartInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
-                {nameof(CartInfo.PublishmentSystemId)} = @{nameof(CartInfo.PublishmentSystemId)}, 
+                {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)}, 
                 {nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)}, 
                 {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)}, 
                 {nameof(CartInfo.ProductId)} = @{nameof(CartInfo.ProductId)}, 
@@ -160,7 +160,7 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(cartInfo.PublishmentSystemId), cartInfo.PublishmentSystemId),
+                _helper.GetParameter(nameof(cartInfo.SiteId), cartInfo.SiteId),
                 _helper.GetParameter(nameof(cartInfo.UserName), cartInfo.UserName),
                 _helper.GetParameter(nameof(cartInfo.SessionId), cartInfo.SessionId),
                 _helper.GetParameter(nameof(cartInfo.ProductId), cartInfo.ProductId),
@@ -181,7 +181,7 @@ namespace SS.Shopping.Provider
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)} WHERE
-                {nameof(CartInfo.PublishmentSystemId)} = @{nameof(CartInfo.PublishmentSystemId)} AND 
+                {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)} AND 
                 {nameof(CartInfo.OrderId)} = 0 AND 
                 {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)}";
 
@@ -189,7 +189,7 @@ namespace SS.Shopping.Provider
             {
                 
                 _helper.GetParameter(nameof(CartInfo.UserName), userName),
-                _helper.GetParameter(nameof(CartInfo.PublishmentSystemId), siteId),
+                _helper.GetParameter(nameof(CartInfo.SiteId), siteId),
                 _helper.GetParameter(nameof(CartInfo.SessionId), sessionId)
             };
 
@@ -216,10 +216,10 @@ namespace SS.Shopping.Provider
         {
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return;
 
-            string sqlString = $"DELETE FROM {TableName} WHERE {nameof(CartInfo.PublishmentSystemId)} = @{nameof(CartInfo.PublishmentSystemId)} AND {nameof(CartInfo.OrderId)} = 0";
+            string sqlString = $"DELETE FROM {TableName} WHERE {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)} AND {nameof(CartInfo.OrderId)} = 0";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(CartInfo.PublishmentSystemId), siteId)
+                _helper.GetParameter(nameof(CartInfo.SiteId), siteId)
             };
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
@@ -244,14 +244,14 @@ namespace SS.Shopping.Provider
         public int GetCartId(int siteId, string sessionId, string productId)
         {
             string sqlString = $@"SELECT {nameof(CartInfo.Id)} FROM {TableName} WHERE 
-                {nameof(CartInfo.PublishmentSystemId)} = @{nameof(CartInfo.PublishmentSystemId)} AND
+                {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)} AND
                 {nameof(CartInfo.OrderId)} = 0 AND
                 {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)} AND
                 {nameof(CartInfo.ProductId)} = @{nameof(CartInfo.ProductId)}";
 
             var parameters = new []
             {
-                _helper.GetParameter(nameof(CartInfo.PublishmentSystemId), siteId),
+                _helper.GetParameter(nameof(CartInfo.SiteId), siteId),
                 _helper.GetParameter(nameof(CartInfo.SessionId), sessionId),
                 _helper.GetParameter(nameof(CartInfo.ProductId), productId)
             };
@@ -265,7 +265,7 @@ namespace SS.Shopping.Provider
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return list;
 
             string sqlString = $@"SELECT {nameof(CartInfo.Id)}, 
-                {nameof(CartInfo.PublishmentSystemId)}, 
+                {nameof(CartInfo.SiteId)}, 
                 {nameof(CartInfo.OrderId)}, 
                 {nameof(CartInfo.UserName)}, 
                 {nameof(CartInfo.SessionId)}, 
@@ -278,12 +278,12 @@ namespace SS.Shopping.Provider
                 {nameof(CartInfo.Count)}, 
                 {nameof(CartInfo.AddDate)}
                 FROM {TableName} WHERE 
-                {nameof(CartInfo.PublishmentSystemId)} = @{nameof(CartInfo.PublishmentSystemId)} AND
+                {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)} AND
                 {nameof(CartInfo.OrderId)} = 0";
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(CartInfo.PublishmentSystemId), siteId)
+                _helper.GetParameter(nameof(CartInfo.SiteId), siteId)
             };
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
@@ -322,7 +322,7 @@ namespace SS.Shopping.Provider
             var list = new List<CartInfo>();
 
             string sqlString = $@"SELECT {nameof(CartInfo.Id)}, 
-                {nameof(CartInfo.PublishmentSystemId)}, 
+                {nameof(CartInfo.SiteId)}, 
                 {nameof(CartInfo.OrderId)}, 
                 {nameof(CartInfo.UserName)}, 
                 {nameof(CartInfo.SessionId)}, 
@@ -361,7 +361,7 @@ namespace SS.Shopping.Provider
             CartInfo cartInfo = null;
 
             string sqlString = $@"SELECT {nameof(CartInfo.Id)}, 
-            {nameof(CartInfo.PublishmentSystemId)}, 
+            {nameof(CartInfo.SiteId)}, 
             {nameof(CartInfo.OrderId)}, 
             {nameof(CartInfo.UserName)}, 
             {nameof(CartInfo.SessionId)}, 
@@ -396,7 +396,7 @@ namespace SS.Shopping.Provider
             var i = 0;
             cartInfo.Id = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
-            cartInfo.PublishmentSystemId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
+            cartInfo.SiteId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
             cartInfo.OrderId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
