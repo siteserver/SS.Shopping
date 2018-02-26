@@ -78,9 +78,9 @@ namespace SS.Shopping.Parse
             int count = 1;
             var successUrl = string.Empty;
 
-            foreach (var attriName in context.StlElementAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.Keys)
             {
-                var value = context.StlElementAttributes[attriName];
+                var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ProductId)))
                 {
                     productId = Main.Instance.ParseApi.ParseAttributeValue(value, context);
@@ -120,12 +120,12 @@ namespace SS.Shopping.Parse
 
             var stlAnchor = new HtmlAnchor();
 
-            foreach (var attributeName in context.StlElementAttributes.Keys)
+            foreach (var attributeName in context.StlAttributes.Keys)
             {
-                stlAnchor.Attributes.Add(attributeName, context.StlElementAttributes[attributeName]);
+                stlAnchor.Attributes.Add(attributeName, context.StlAttributes[attributeName]);
             }
 
-            stlAnchor.InnerHtml = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
+            stlAnchor.InnerHtml = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
             stlAnchor.HRef = "javascript:;";
 
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");

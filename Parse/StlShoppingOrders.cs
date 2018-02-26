@@ -111,9 +111,9 @@ namespace SS.Shopping.Parse
             var orderUrl = string.Empty;
             var weixinName = string.Empty;
 
-            foreach (var attriName in context.StlElementAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.Keys)
             {
-                var value = context.StlElementAttributes[attriName];
+                var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributeSuccessUrl))
                 {
                     successUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
@@ -130,8 +130,8 @@ namespace SS.Shopping.Parse
 
             var paymentApi = new PaymentApi(context.SiteId);
 
-            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
-            if (string.IsNullOrEmpty(context.StlElementInnerXml))
+            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
+            if (string.IsNullOrEmpty(context.StlInnerXml))
             {
                 if (!string.IsNullOrEmpty(weixinName))
                 {

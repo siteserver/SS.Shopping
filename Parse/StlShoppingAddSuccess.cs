@@ -51,9 +51,9 @@ namespace SS.Shopping.Parse
             var cartUrl = string.Empty;
             var continueUrl = string.Empty;
 
-            foreach (var attriName in context.StlElementAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.Keys)
             {
-                var value = context.StlElementAttributes[attriName];
+                var value = context.StlAttributes[attriName];
 
                 if (Utils.EqualsIgnoreCase(attriName, AttributeCartUrl))
                 {
@@ -71,9 +71,9 @@ namespace SS.Shopping.Parse
             }
 
             string template;
-            if (!string.IsNullOrEmpty(context.StlElementInnerXml))
+            if (!string.IsNullOrEmpty(context.StlInnerXml))
             {
-                template = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
+                template = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
             }
             else
             {

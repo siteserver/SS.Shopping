@@ -66,9 +66,9 @@ namespace SS.Shopping.Parse
             var payUrl = string.Empty;
             var loginUrl = string.Empty;
 
-            foreach (var attriName in context.StlElementAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.Keys)
             {
-                var value = context.StlElementAttributes[attriName];
+                var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributePayUrl))
                 {
                     payUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
@@ -87,8 +87,8 @@ namespace SS.Shopping.Parse
             var loginToCartUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(currentUrl)}";
             var loginToPayUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(payUrl)}";
 
-            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlElementInnerXml, context);
-            if (string.IsNullOrEmpty(context.StlElementInnerXml))
+            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
+            if (string.IsNullOrEmpty(context.StlInnerXml))
             {
                 html = $@"
 <div class=""cart"">
