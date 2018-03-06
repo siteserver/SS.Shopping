@@ -304,6 +304,7 @@ namespace SS.Shopping.Parse
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
 
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
+            var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
             var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
             var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
             var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
@@ -463,6 +464,7 @@ namespace SS.Shopping.Parse
 
             return $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
+<script type=""text/javascript"" src=""{utilsUrl}""></script>
 <script type=""text/javascript"" src=""{vueUrl}""></script>
 <script type=""text/javascript"" src=""{deviceUrl}""></script>
 <link rel=""stylesheet"" type=""text/css"" href=""{baseCssUrl}"" />
@@ -471,33 +473,7 @@ namespace SS.Shopping.Parse
     {template}
 </div>
 <script type=""text/javascript"">
-    function shoppingGuid() {{
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {{
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-      }});
-    }}
-    function shoppingSetCookie(cname, cvalue) {{
-        var d = new Date();  
-        d.setTime(d.getTime() + (24*60*60*1000));
-        var expires = ""expires=""+d.toUTCString();  
-        document.cookie = cname + ""="" + cvalue + ""; "" + expires;  
-    }}
-    function shoppingGetCookie(cname) {{
-        var name = cname + ""="";  
-        var ca = document.cookie.split(';');  
-        for(var i=0; i<ca.length; i++) {{
-            var c = ca[i];  
-            while (c.charAt(0)==' ') c = c.substring(1);  
-            if (c.indexOf(name) != -1) return c.substring(name.length, c.length);  
-        }}  
-        return """";  
-    }}
-    var sessionId = shoppingGetCookie('ss-shopping-session-id');
-    if (!sessionId) {{
-        sessionId = shoppingGuid();
-        shoppingSetCookie('ss-shopping-session-id', sessionId);
-    }}
+    var sessionId = shoppingGetSessionId();
     var {vueId} = new Vue({{
         el: '#{elementId}',
         data: {{

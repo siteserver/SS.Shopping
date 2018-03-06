@@ -140,6 +140,7 @@
     <Content Include="assets\js\jquery.min.js" />
     <Content Include="assets\js\location.js" />
     <Content Include="assets\js\sweetalert.min.js" />
+    <Content Include="assets\js\utils.js" />
     <Content Include="assets\js\vue.min.js" />
     <Content Include="assets\plugin-utils\css\bootstrap.min.css" />
     <Content Include="assets\plugin-utils\css\font-awesome.min.css" />
