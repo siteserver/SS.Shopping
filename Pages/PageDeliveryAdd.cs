@@ -30,7 +30,7 @@ namespace SS.Shopping.Pages
 
         public static string GetRedirectUrl(int siteId, int deliveryId)
         {
-            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageDeliveryAdd)}.aspx?siteId={siteId}&deliveryId={deliveryId}");
+            return $"{nameof(PageDeliveryAdd)}.aspx?siteId={siteId}&deliveryId={deliveryId}";
         }
 
         public void Page_Load(object sender, EventArgs e)

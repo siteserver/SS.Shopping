@@ -15,7 +15,7 @@ namespace SS.Shopping.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageDelivery)}.aspx?siteId={siteId}");
+            return $"{nameof(PageDelivery)}.aspx?siteId={siteId}";
         }
 
         public void Page_Load(object sender, EventArgs e)

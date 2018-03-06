@@ -48,7 +48,7 @@ namespace SS.Shopping.Pages
 
         public static string GetRedirectUrl(int siteId, bool isPaied, string state, string keyword)
         {
-            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageOrder)}.aspx?siteId={siteId}&isPaied={isPaied}&state={state}&keyword={keyword}");
+            return $"{nameof(PageOrder)}.aspx?siteId={siteId}&isPaied={isPaied}&state={state}&keyword={keyword}";
         }
 
 	    public void Page_Load(object sender, EventArgs e)
