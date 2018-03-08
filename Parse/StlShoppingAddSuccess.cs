@@ -118,6 +118,9 @@ namespace SS.Shopping.Parse
         var sessionId = shoppingGetSessionId();
         $.ajax({{
             url : ""{apiUrl}"",
+            xhrFields: {{
+                withCredentials: true
+            }},
             type: ""POST"",
             data: JSON.stringify({{
                 siteId: '{context.SiteId}',

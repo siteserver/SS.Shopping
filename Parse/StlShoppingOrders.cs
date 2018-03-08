@@ -322,6 +322,9 @@ namespace SS.Shopping.Parse
                 {vueId}.orderInfoList = [];
                 $.ajax({{
                     url : ""{apiGetUrl}"",
+                    xhrFields: {{
+                        withCredentials: true
+                    }},
                     type: ""POST"",
                     data: JSON.stringify({{
                         type: type
@@ -350,6 +353,9 @@ namespace SS.Shopping.Parse
                     this.orderInfoList.splice(index, 1);
                     $.ajax({{
                         url : ""{apiRemoveOrderUrl}"",
+                        xhrFields: {{
+                            withCredentials: true
+                        }},
                         type: ""POST"",
                         data: JSON.stringify({{
                             orderId: orderInfo.id
@@ -376,6 +382,9 @@ namespace SS.Shopping.Parse
                 var interval = setInterval(function(){{
                     $.ajax({{
                         url : ""{apiWeixinIntervalUrl}"",
+                        xhrFields: {{
+                            withCredentials: true
+                        }},
                         type: ""POST"",
                         data: JSON.stringify({{orderNo: orderNo}}),
                         contentType: ""application/json; charset=utf-8"",
@@ -404,6 +413,9 @@ namespace SS.Shopping.Parse
 
                 $.ajax({{
                     url : ""{apiPayUrl}"",
+                    xhrFields: {{
+                        withCredentials: true
+                    }},
                     type: ""POST"",
                     data: JSON.stringify({{
                         siteId: {context.SiteId},

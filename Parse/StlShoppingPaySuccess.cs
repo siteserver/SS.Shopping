@@ -102,6 +102,9 @@ namespace SS.Shopping.Parse
         if (!guid) return;
         $.ajax({{
             url : ""{apiGetUrl}"",
+            xhrFields: {{
+                withCredentials: true
+            }},
             type: ""POST"",
             data: JSON.stringify({{
                 guid: guid

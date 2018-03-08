@@ -178,6 +178,9 @@ namespace SS.Shopping.Parse
             save: function () {{
                 $.ajax({{
                     url : ""{apiSaveUrl}"",
+                    xhrFields: {{
+                        withCredentials: true
+                    }},
                     type: ""POST"",
                     data: JSON.stringify({{
                         siteId: '{context.SiteId}',
@@ -202,6 +205,9 @@ namespace SS.Shopping.Parse
     $(document).ready(function(){{
         $.ajax({{
             url : ""{apiGetUrl}"",
+            xhrFields: {{
+                withCredentials: true
+            }},
             type: ""POST"",
             data: JSON.stringify({{
                 siteId: '{context.SiteId}',

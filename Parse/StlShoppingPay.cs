@@ -506,6 +506,9 @@ namespace SS.Shopping.Parse
                 this.isAddressAdd = false;
                 $.ajax({{
                     url : ""{apiSaveAddressUrl}"",
+                    xhrFields: {{
+                        withCredentials: true
+                    }},
                     type: ""POST"",
                     data: JSON.stringify({{
                         siteId: {context.SiteId},
@@ -557,6 +560,9 @@ namespace SS.Shopping.Parse
                     this.addressInfoList.splice(index, 1);
                     $.ajax({{
                         url : ""{apiRemoveAddressUrl}"",
+                        xhrFields: {{
+                            withCredentials: true
+                        }},
                         type: ""POST"",
                         data: JSON.stringify({{
                             siteId: '{context.SiteId}',
@@ -580,6 +586,9 @@ namespace SS.Shopping.Parse
                 var $this = this;
                 $.ajax({{
                     url : ""{apiSetAddressAndDelivery}"",
+                    xhrFields: {{
+                        withCredentials: true
+                    }},
                     type: ""POST"",
                     data: JSON.stringify({{
                         siteId: '{context.SiteId}',
@@ -605,6 +614,9 @@ namespace SS.Shopping.Parse
                 var interval = setInterval(function(){{
                     $.ajax({{
                         url : ""{apiWeixinIntervalUrl}"",
+                        xhrFields: {{
+                            withCredentials: true
+                        }},
                         type: ""POST"",
                         data: JSON.stringify({{orderNo: orderNo}}),
                         contentType: ""application/json; charset=utf-8"",
@@ -633,6 +645,9 @@ namespace SS.Shopping.Parse
 
                 $.ajax({{
                     url : ""{apiPayUrl}"",
+                    xhrFields: {{
+                        withCredentials: true
+                    }},
                     type: ""POST"",
                     data: JSON.stringify({{
                         siteId: {context.SiteId},
@@ -671,6 +686,9 @@ namespace SS.Shopping.Parse
     $(document).ready(function(){{
         $.ajax({{
             url : ""{apiGetUrl}"",
+            xhrFields: {{
+                withCredentials: true
+            }},
             type: ""POST"",
             data: JSON.stringify({{
                 siteId: '{context.SiteId}',
