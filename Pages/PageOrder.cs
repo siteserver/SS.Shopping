@@ -31,6 +31,7 @@ namespace SS.Shopping.Pages
         public Literal LtlTel;
         public Literal LtlLocation;
         public Literal LtlAddress;
+        public Literal LtlZipCode;
         public Literal LtlChannel;
         public Literal LtlAmount;
         public Literal LtlAddDate;
@@ -136,6 +137,7 @@ if (ids.length > 0){{
 	            LtlTel.Text = orderInfo.Tel;
 	            LtlLocation.Text = orderInfo.Location;
 	            LtlAddress.Text = orderInfo.Address;
+	            LtlZipCode.Text = orderInfo.ZipCode;
 	            LtlChannel.Text = Utils.GetChannelText(orderInfo.Channel);
 	            LtlAmount.Text =
 	                $@"商品金额：¥{orderInfo.TotalFee:N2}元 运费：¥{orderInfo.ExpressCost:N2}元 合计：¥{orderInfo.TotalFee +

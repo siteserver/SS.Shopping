@@ -174,6 +174,7 @@ namespace SS.Shopping.Parse
                 Guid = guid,
                 AddDate = DateTime.Now,
                 Address = addressInfo.Address,
+                ZipCode = addressInfo.ZipCode,
                 Location = addressInfo.Location,
                 Message = message,
                 Mobile = addressInfo.Mobile,
@@ -419,7 +420,7 @@ namespace SS.Shopping.Parse
       </ul>
     </div>
     <div class=""add_cont"" v-show=""isAddressAdd"">
-      <div class=""address_title"">新增收货地址</div>
+      <div class=""address_title"">收货地址</div>
       <div class=""address_close add_close"" @click=""isAddressAdd = false""></div>
       <ul class=""add_ul"">
         <li><span>收货人</span><input type=""text"" v-model=""addressInfo.realName"" /></li>
@@ -441,6 +442,7 @@ namespace SS.Shopping.Parse
           </ul>
         </li>
         <li class=""add_ul_input""><span>详细地址</span><input type=""text"" v-model=""addressInfo.address"" /></li>
+        <li><span>邮编</span><input type=""text"" v-model=""addressInfo.zipCode"" /></li>
       </ul>
       <a href=""javascript:;"" @click=""saveAddress(addressInfo)"" class=""add_save"">保存并提交</a>
     </div>

@@ -69,6 +69,12 @@ namespace SS.Shopping.Provider
             },
             new TableColumn
             {
+                AttributeName = nameof(AddressInfo.ZipCode),
+                DataType = DataType.VarChar,
+                DataLength = 50
+            },
+            new TableColumn
+            {
                 AttributeName = nameof(AddressInfo.IsDefault),
                 DataType = DataType.Boolean
             }
@@ -84,6 +90,7 @@ namespace SS.Shopping.Provider
             {nameof(AddressInfo.Tel)}, 
             {nameof(AddressInfo.Location)}, 
             {nameof(AddressInfo.Address)}, 
+            {nameof(AddressInfo.ZipCode)}, 
             {nameof(AddressInfo.IsDefault)})
      VALUES
            (@{nameof(AddressInfo.UserName)}, 
@@ -93,6 +100,7 @@ namespace SS.Shopping.Provider
             @{nameof(AddressInfo.Tel)}, 
             @{nameof(AddressInfo.Location)}, 
             @{nameof(AddressInfo.Address)}, 
+            @{nameof(AddressInfo.ZipCode)}, 
             @{nameof(AddressInfo.IsDefault)})";
 
             var parameters = new List<IDataParameter>
@@ -104,6 +112,7 @@ namespace SS.Shopping.Provider
                 _helper.GetParameter(nameof(addressInfo.Tel), addressInfo.Tel),
                 _helper.GetParameter(nameof(addressInfo.Location), addressInfo.Location),
                 _helper.GetParameter(nameof(addressInfo.Address), addressInfo.Address),
+                _helper.GetParameter(nameof(addressInfo.ZipCode), addressInfo.ZipCode),
                 _helper.GetParameter(nameof(addressInfo.IsDefault), addressInfo.IsDefault)
             };
 
@@ -120,6 +129,7 @@ namespace SS.Shopping.Provider
                 {nameof(AddressInfo.Tel)} = @{nameof(AddressInfo.Tel)}, 
                 {nameof(AddressInfo.Location)} = @{nameof(AddressInfo.Location)}, 
                 {nameof(AddressInfo.Address)} = @{nameof(AddressInfo.Address)}, 
+                {nameof(AddressInfo.ZipCode)} = @{nameof(AddressInfo.ZipCode)}, 
                 {nameof(AddressInfo.IsDefault)} = @{nameof(AddressInfo.IsDefault)}
             WHERE {nameof(AddressInfo.Id)} = @{nameof(AddressInfo.Id)}";
 
@@ -132,6 +142,7 @@ namespace SS.Shopping.Provider
                 _helper.GetParameter(nameof(addressInfo.Tel), addressInfo.Tel),
                 _helper.GetParameter(nameof(addressInfo.Location), addressInfo.Location),
                 _helper.GetParameter(nameof(addressInfo.Address), addressInfo.Address),
+                _helper.GetParameter(nameof(addressInfo.ZipCode), addressInfo.ZipCode),
                 _helper.GetParameter(nameof(addressInfo.IsDefault), addressInfo.IsDefault),
                 _helper.GetParameter(nameof(addressInfo.Id), addressInfo.Id)
             };
@@ -262,6 +273,7 @@ namespace SS.Shopping.Provider
                 {nameof(AddressInfo.Tel)}, 
                 {nameof(AddressInfo.Location)}, 
                 {nameof(AddressInfo.Address)}, 
+                {nameof(AddressInfo.ZipCode)}, 
                 {nameof(AddressInfo.IsDefault)}
                 FROM {TableName} WHERE";
 
@@ -310,6 +322,7 @@ namespace SS.Shopping.Provider
             {nameof(AddressInfo.Tel)}, 
             {nameof(AddressInfo.Location)}, 
             {nameof(AddressInfo.Address)}, 
+            {nameof(AddressInfo.ZipCode)}, 
             {nameof(AddressInfo.IsDefault)}
             FROM {TableName} WHERE {nameof(AddressInfo.Id)} = {addressId}";
 
@@ -347,6 +360,8 @@ namespace SS.Shopping.Provider
             addressInfo.Location = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;
             addressInfo.Address = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
+            i++;
+            addressInfo.ZipCode = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;
             addressInfo.IsDefault = !rdr.IsDBNull(i) && rdr.GetBoolean(i);
 

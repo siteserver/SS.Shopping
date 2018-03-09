@@ -175,6 +175,14 @@
                       </div>
                     </div>
                     <div class="form-group">
+                      <label class="col-md-2 control-label">邮编</label>
+                      <div class="col-md-10">
+                        <p class="form-control-static">
+                          <asp:Literal ID="LtlZipCode" runat="server"></asp:Literal>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="form-group">
                       <label class="col-md-2 control-label">支付渠道</label>
                       <div class="col-md-4">
                         <p class="form-control-static">

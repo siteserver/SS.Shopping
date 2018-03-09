@@ -81,6 +81,12 @@ namespace SS.Shopping.Provider
             },
             new TableColumn
             {
+                AttributeName = nameof(OrderInfo.ZipCode),
+                DataType = DataType.VarChar,
+                DataLength = 50
+            },
+            new TableColumn
+            {
                 AttributeName = nameof(OrderInfo.Message),
                 DataType = DataType.VarChar,
                 DataLength = 200
@@ -136,6 +142,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.Tel)}, 
             {nameof(OrderInfo.Location)}, 
             {nameof(OrderInfo.Address)}, 
+            {nameof(OrderInfo.ZipCode)}, 
             {nameof(OrderInfo.Message)}, 
             {nameof(OrderInfo.Channel)}, 
             {nameof(OrderInfo.TotalFee)}, 
@@ -154,6 +161,7 @@ namespace SS.Shopping.Provider
             @{nameof(OrderInfo.Tel)}, 
             @{nameof(OrderInfo.Location)}, 
             @{nameof(OrderInfo.Address)}, 
+            @{nameof(OrderInfo.ZipCode)}, 
             @{nameof(OrderInfo.Message)}, 
             @{nameof(OrderInfo.Channel)}, 
             @{nameof(OrderInfo.TotalFee)}, 
@@ -174,6 +182,7 @@ namespace SS.Shopping.Provider
                 _helper.GetParameter(nameof(orderInfo.Tel), orderInfo.Tel),
                 _helper.GetParameter(nameof(orderInfo.Location), orderInfo.Location),
                 _helper.GetParameter(nameof(orderInfo.Address), orderInfo.Address),
+                _helper.GetParameter(nameof(orderInfo.ZipCode), orderInfo.ZipCode),
                 _helper.GetParameter(nameof(orderInfo.Message), orderInfo.Message),
                 _helper.GetParameter(nameof(orderInfo.Channel), orderInfo.Channel),
                 _helper.GetParameter(nameof(orderInfo.TotalFee), orderInfo.TotalFee),
@@ -408,6 +417,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.Tel)}, 
             {nameof(OrderInfo.Location)}, 
             {nameof(OrderInfo.Address)}, 
+            {nameof(OrderInfo.ZipCode)}, 
             {nameof(OrderInfo.Message)}, 
             {nameof(OrderInfo.Channel)}, 
             {nameof(OrderInfo.TotalFee)}, 
@@ -456,6 +466,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.Tel)}, 
             {nameof(OrderInfo.Location)}, 
             {nameof(OrderInfo.Address)}, 
+            {nameof(OrderInfo.ZipCode)}, 
             {nameof(OrderInfo.Message)}, 
             {nameof(OrderInfo.Channel)}, 
             {nameof(OrderInfo.TotalFee)}, 
@@ -492,6 +503,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.Tel)}, 
             {nameof(OrderInfo.Location)}, 
             {nameof(OrderInfo.Address)}, 
+            {nameof(OrderInfo.ZipCode)}, 
             {nameof(OrderInfo.Message)}, 
             {nameof(OrderInfo.Channel)}, 
             {nameof(OrderInfo.TotalFee)}, 
@@ -537,6 +549,7 @@ namespace SS.Shopping.Provider
                     {nameof(OrderInfo.Tel)}, 
                     {nameof(OrderInfo.Location)}, 
                     {nameof(OrderInfo.Address)}, 
+                    {nameof(OrderInfo.ZipCode)}, 
                     {nameof(OrderInfo.Message)}, 
                     {nameof(OrderInfo.Channel)}, 
                     {nameof(OrderInfo.TotalFee)}, 
@@ -563,6 +576,7 @@ namespace SS.Shopping.Provider
                     {nameof(OrderInfo.Tel)}, 
                     {nameof(OrderInfo.Location)}, 
                     {nameof(OrderInfo.Address)}, 
+                    {nameof(OrderInfo.ZipCode)}, 
                     {nameof(OrderInfo.Message)}, 
                     {nameof(OrderInfo.Channel)}, 
                     {nameof(OrderInfo.TotalFee)}, 
@@ -609,6 +623,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.Tel)}, 
             {nameof(OrderInfo.Location)}, 
             {nameof(OrderInfo.Address)}, 
+            {nameof(OrderInfo.ZipCode)}, 
             {nameof(OrderInfo.Message)}, 
             {nameof(OrderInfo.Channel)}, 
             {nameof(OrderInfo.TotalFee)}, 
@@ -670,6 +685,8 @@ namespace SS.Shopping.Provider
             orderInfo.Location = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;
             orderInfo.Address = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
+            i++;
+            orderInfo.ZipCode = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;
             orderInfo.Message = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;
