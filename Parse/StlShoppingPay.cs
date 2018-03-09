@@ -307,7 +307,7 @@ namespace SS.Shopping.Parse
             var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
             var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
             var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
-            //var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
+            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
             var locationCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/location.css");
             var locationJsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/location.js");
             var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayGet));
@@ -467,6 +467,7 @@ namespace SS.Shopping.Parse
 <script type=""text/javascript"" src=""{utilsUrl}""></script>
 <script type=""text/javascript"" src=""{vueUrl}""></script>
 <script type=""text/javascript"" src=""{deviceUrl}""></script>
+<link rel=""stylesheet"" type=""text/css"" href=""{baseCssUrl}"" />
 <link rel=""stylesheet"" type=""text/css"" href=""{locationCssUrl}"" />
 <div id=""{elementId}"">
     {template}
