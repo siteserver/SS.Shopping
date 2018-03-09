@@ -74,13 +74,12 @@ namespace SS.Shopping.Parse
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
             var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
-            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
+            //var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
             var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPaySuccessGet));
 
             return $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
 <script type=""text/javascript"" src=""{vueUrl}""></script>
-<link rel=""stylesheet"" type=""text/css"" href=""{baseCssUrl}"" />
 <div id=""{elementId}"">
     {template}
 </div>

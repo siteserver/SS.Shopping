@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /* CSS Document -- skyren */
 html { -webkit-text-size-adjust: none; }
 
@@ -126,15 +126,11 @@ li { list-style-type: none; vertical-align: 0; }
 
 .w1060 { width: 1060px; margin: 0 auto; overflow: hidden; }
 
-.logo { float: left; width: 400px; height: 50px; background: url(../images/logo.gif) no-repeat left center; padding: 12px 0; }
-
 .header_bg { width: 100%; background: url(../images/bg.png) repeat-x; height: 6px; position: relative; z-index: 2; }
 
 .search { width: 288px; height: 28px; margin-top: 20px; float: right; border: 1px solid #cdcdcd; border-radius: 3px; overflow: hidden; }
 
 .search input { width: 245px; line-height: 28px; float: left; }
-
-.search_btn { width: 32px; height: 28px; float: right; border-left: 1px solid #cdcdcd; background: #ececec url(../images/search.gif) no-repeat center center; cursor: pointer; }
 
 .index_bn { width: 1425px; height: 326px; margin: -6px auto 0; position: relative; z-index: 1; }
 

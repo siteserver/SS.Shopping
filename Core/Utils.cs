@@ -578,15 +578,13 @@ namespace SS.Shopping.Core
 
             var deliveryFee = startFees;
 
-            var add = count - startStandards;
-            if (add > 0)
+            if (count > startStandards)
             {
-                deliveryFee = Math.Floor(Convert.ToDecimal(add / addStandards)) * addFees;
-            }
-
-            if (count <= startStandards)
-            {
-                deliveryFee = startFees;
+                var add = count - startStandards;
+                if (addStandards > 0 && addFees > 0)
+                {
+                    deliveryFee += Math.Floor(Convert.ToDecimal(add / addStandards)) * addFees;
+                }
             }
 
             return deliveryFee;

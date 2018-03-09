@@ -274,7 +274,7 @@ namespace SS.Shopping.Parse
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
             var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
             var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
-            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
+            //var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
             var orderCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/order.css");
             var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersGet));
             var apiRemoveOrderUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersRemove));
@@ -285,7 +285,6 @@ namespace SS.Shopping.Parse
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
 <script type=""text/javascript"" src=""{vueUrl}""></script>
 <script type=""text/javascript"" src=""{deviceUrl}""></script>
-<link rel=""stylesheet"" type=""text/css"" href=""{baseCssUrl}"" />
 <link rel=""stylesheet"" type=""text/css"" href=""{orderCssUrl}"" />
 <script type=""text/javascript"">
     var match = location.search.match(new RegExp(""[\?\&]isPaymentSuccess=([^\&]+)"", ""i""));
