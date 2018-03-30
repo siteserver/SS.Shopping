@@ -36,11 +36,11 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SiteServer.Plugin, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SiteServer.Plugin.1.4.0\lib\net45\SiteServer.Plugin.dll</HintPath>
+    <Reference Include="SiteServer.Plugin, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SiteServer.Plugin.1.5.0\lib\net45\SiteServer.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="SS.Payment, Version=1.1.19.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SS.Payment.1.1.19\lib\net461\SS.Payment.dll</HintPath>
+    <Reference Include="SS.Payment, Version=1.1.30.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SS.Payment.1.1.30\lib\net461\SS.Payment.dll</HintPath>
     </Reference>
     <Reference Include="ThoughtWorks.QRCode, Version=1.0.4778.30637, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ThoughtWorks.QRCode.1.1.0\lib\ThoughtWorks.QRCode.dll</HintPath>
@@ -108,6 +108,7 @@
     <None Include="assets\plugin-utils\fonts\ionicons.ttf" />
     <None Include="assets\plugin-utils\fonts\ionicons.woff" />
     <None Include="packages.config" />
+    <None Include="SS.Shopping.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\base.css" />
@@ -151,6 +152,7 @@
     <Content Include="assets\plugin-utils\js\bootstrap.min.js" />
     <Content Include="assets\plugin-utils\js\jquery.min.js" />
     <Content Include="assets\plugin-utils\js\plugin-utils.js" />
+    <Content Include="logo.svg" />
     <Content Include="pageDelivery.aspx" />
     <Content Include="pageDeliveryAdd.aspx" />
     <Content Include="pageIntegrationPay.aspx" />

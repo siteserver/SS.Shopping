@@ -44,18 +44,6 @@
           </div>
 
           <div class="form-group">
-            <label class="col-form-label">用户名
-              <asp:RequiredFieldValidator ControlToValidate="TbUserId" ErrorMessage=" *" ForeColor="red" Display="Dynamic" runat="server"
-              />
-              <asp:RegularExpressionValidator runat="server" ControlToValidate="TbUserId" ValidationExpression="[^']+" ErrorMessage=" *"
-                ForeColor="red" Display="Dynamic" />
-            </label>
-            <asp:TextBox id="TbUserId" class="form-control" runat="server"></asp:TextBox>
-            <small class="form-text text-muted">
-              <a href="https://biz.jd.com" target="_blank">京东金融</a> - 安全中心 - 账户设置</small>
-          </div>
-
-          <div class="form-group">
             <label class="col-form-label">MD5 密钥
               <asp:RequiredFieldValidator ControlToValidate="TbMd5Key" ErrorMessage=" *" ForeColor="red" Display="Dynamic" runat="server"
               />
@@ -111,7 +99,7 @@
 
         <div class="text-center">
           <asp:Button class="btn btn-primary" ID="Submit" Text="确 定" OnClick="Submit_OnClick" runat="server" />
-          <asp:Button class="btn m-l-10" Text="返 回" OnClick="BtnReturn_OnClick" runat="server" />
+          <asp:Button class="btn m-l-10" Text="返 回" OnClick="BtnReturn_OnClick" CausesValidation="false" runat="server" />
         </div>
       </div>
 

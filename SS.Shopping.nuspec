@@ -8,7 +8,7 @@
     <owners>siteserver</owners>
     <licenseUrl>https://github.com/siteserver/SS.Shopping/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/siteserver/SS.Shopping</projectUrl>
-    <iconUrl>https://github.com/siteserver/SS.Shopping/raw/master/logo.png</iconUrl>
+    <iconUrl>http://plugins.siteserver.cn/ss.shopping/logo.svg</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SiteServer CMS 购物插件</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
