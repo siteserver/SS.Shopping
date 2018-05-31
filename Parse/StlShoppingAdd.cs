@@ -125,7 +125,7 @@ namespace SS.Shopping.Parse
                 stlAnchor.Attributes.Add(attributeName, context.StlAttributes[attributeName]);
             }
 
-            stlAnchor.InnerHtml = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
+            stlAnchor.InnerHtml = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
             stlAnchor.HRef = "javascript:;";
 
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");

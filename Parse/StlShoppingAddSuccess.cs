@@ -3,12 +3,8 @@ using SS.Shopping.Core;
 
 namespace SS.Shopping.Parse
 {
-    public class StlShoppingAddSuccess
+    public static class StlShoppingAddSuccess
     {
-        private StlShoppingAddSuccess()
-        {
-        }
-
         public const string ElementName = "stl:shoppingAddSuccess";
 
         public const string AttributeCartUrl = "cartUrl";
@@ -71,9 +67,9 @@ namespace SS.Shopping.Parse
             }
 
             string template;
-            if (!string.IsNullOrEmpty(context.StlInnerXml))
+            if (!string.IsNullOrEmpty(context.StlInnerHtml))
             {
-                template = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
+                template = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
             }
             else
             {

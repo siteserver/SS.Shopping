@@ -5,16 +5,11 @@ using System.Web;
 using SiteServer.Plugin;
 using SS.Payment.Core;
 using SS.Shopping.Model;
-using Utils = SS.Shopping.Core.Utils;
 
 namespace SS.Shopping.Parse
 {
-    public class StlShoppingOrders
+    public static class StlShoppingOrders
     {
-        private StlShoppingOrders()
-        {
-        }
-
         public const string ElementName = "stl:shoppingOrders";
 
         public const string AttributeSuccessUrl = "successUrl";
@@ -130,8 +125,8 @@ namespace SS.Shopping.Parse
 
             var paymentApi = new PaymentApi(context.SiteId);
 
-            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
-            if (string.IsNullOrEmpty(context.StlInnerXml))
+            var html = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+            if (string.IsNullOrEmpty(context.StlInnerHtml))
             {
                 if (!string.IsNullOrEmpty(weixinName))
                 {

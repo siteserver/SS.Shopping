@@ -4,12 +4,8 @@ using SS.Shopping.Core;
 
 namespace SS.Shopping.Parse
 {
-    public class StlShoppingPaySuccess
+    public static class StlShoppingPaySuccess
     {
-        private StlShoppingPaySuccess()
-        {
-        }
-
         public const string ElementName = "stl:shoppingPaySuccess";
 
         public const string AttributeOrderUrl = "orderUrl";
@@ -35,9 +31,9 @@ namespace SS.Shopping.Parse
             }
 
             string template;
-            if (!string.IsNullOrEmpty(context.StlInnerXml))
+            if (!string.IsNullOrEmpty(context.StlInnerHtml))
             {
-                template = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
+                template = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
             }
             else
             {

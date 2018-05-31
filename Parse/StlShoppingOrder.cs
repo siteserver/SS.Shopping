@@ -2,16 +2,11 @@
 using System.Text;
 using SiteServer.Plugin;
 using SS.Payment.Core;
-using Utils = SS.Shopping.Core.Utils;
 
 namespace SS.Shopping.Parse
 {
-    public class StlShoppingOrder
+    public static class StlShoppingOrder
     {
-        private StlShoppingOrder()
-        {
-        }
-
         public const string ElementName = "stl:shoppingOrder";
 
         public const string AttributeSuccessUrl = "successUrl";
@@ -51,8 +46,8 @@ namespace SS.Shopping.Parse
                 }
             }
 
-            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
-            if (string.IsNullOrEmpty(context.StlInnerXml))
+            var html = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+            if (string.IsNullOrEmpty(context.StlInnerHtml))
             {
                 var htmlBuilder = new StringBuilder();
                 htmlBuilder.Append(@"

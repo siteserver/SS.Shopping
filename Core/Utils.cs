@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Xml;
 using SiteServer.Plugin;
 using SS.Shopping.Model;
 
 namespace SS.Shopping.Core
 {
-    public class Utils
+    public static class Utils
     {
         public static string GetMessageHtml(string message)
         {
@@ -25,22 +23,6 @@ namespace SS.Shopping.Core
             return isSuccess
                 ? $@"<div class=""alert alert-success"" role=""alert"">{message}</div>"
                 : $@"<div class=""alert alert-danger"" role=""alert"">{message}</div>";
-        }
-
-        public static string GetSelectedListControlValueCollection(ListControl listControl)
-        {
-            var list = new List<string>();
-            if (listControl != null)
-            {
-                foreach (ListItem item in listControl.Items)
-                {
-                    if (item.Selected)
-                    {
-                        list.Add(item.Value);
-                    }
-                }
-            }
-            return string.Join(",", list);
         }
 
         public static void SelectListItems(ListControl listControl, params string[] values)
@@ -69,83 +51,6 @@ namespace SS.Shopping.Core
         {
             bool result;
             return bool.TryParse(boolStr, out result) && result;
-        }
-
-        public static string ToStringWithQuote(List<string> collection)
-        {
-            var builder = new StringBuilder();
-            if (collection != null)
-            {
-                foreach (var obj in collection)
-                {
-                    builder.Append("'").Append(obj).Append("'").Append(",");
-                }
-                if (builder.Length != 0) builder.Remove(builder.Length - 1, 1);
-            }
-            return builder.ToString();
-        }
-
-        public static List<string> StringCollectionToStringList(string collection)
-        {
-            return StringCollectionToStringList(collection, ',');
-        }
-
-        public static List<string> StringCollectionToStringList(string collection, char split)
-        {
-            var list = new List<string>();
-            if (!string.IsNullOrEmpty(collection))
-            {
-                var array = collection.Split(split);
-                foreach (var s in array)
-                {
-                    list.Add(s);
-                }
-            }
-            return list;
-        }
-
-        public static string GetControlRenderHtml(Control control)
-        {
-            var builder = new StringBuilder();
-            if (control != null)
-            {
-                var sw = new System.IO.StringWriter(builder);
-                var htw = new HtmlTextWriter(sw);
-                control.RenderControl(htw);
-            }
-            return builder.ToString();
-        }
-
-        public static string ReplaceNewlineToBr(string inputString)
-        {
-            if (string.IsNullOrEmpty(inputString)) return string.Empty;
-            var retVal = new StringBuilder();
-            inputString = inputString.Trim();
-            foreach (var t in inputString)
-            {
-                switch (t)
-                {
-                    case '\n':
-                        retVal.Append("<br />");
-                        break;
-                    case '\r':
-                        break;
-                    default:
-                        retVal.Append(t);
-                        break;
-                }
-            }
-            return retVal.ToString();
-        }
-
-        public static string HtmlDecode(string inputString)
-        {
-            return HttpUtility.HtmlDecode(inputString);
-        }
-
-        public static string HtmlEncode(string inputString)
-        {
-            return HttpUtility.HtmlEncode(inputString);
         }
 
         public static string GetUrlWithoutQueryString(string rawUrl)
@@ -251,266 +156,6 @@ namespace SS.Shopping.Core
         {
             var o = Eval(dataItem, name);
             return o != null && Convert.ToBoolean(o.ToString());
-        }
-
-        public static List<string> GetHtmlFormElements(string content)
-        {
-            var list = new List<string>();
-
-            const RegexOptions options = RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.IgnoreCase;
-
-            var regex = "<input\\s*[^>]*?/>|<input\\s*[^>]*?>[^>]*?</input>";
-            var reg = new Regex(regex, options);
-            var mc = reg.Matches(content);
-            for (var i = 0; i < mc.Count; i++)
-            {
-                var element = mc[i].Value;
-                list.Add(element);
-            }
-
-            regex = "<textarea\\s*[^>]*?/>|<textarea\\s*[^>]*?>[^>]*?</textarea>";
-            reg = new Regex(regex, options);
-            mc = reg.Matches(content);
-            for (var i = 0; i < mc.Count; i++)
-            {
-                var element = mc[i].Value;
-                list.Add(element);
-            }
-
-            regex = "<select\\b[\\s\\S]*?</select>";
-            reg = new Regex(regex, options);
-            mc = reg.Matches(content);
-            for (var i = 0; i < mc.Count; i++)
-            {
-                var element = mc[i].Value;
-                list.Add(element);
-            }
-
-            return list;
-        }
-
-        private const string XmlDeclaration = "<?xml version='1.0'?>";
-
-        private const string XmlNamespaceStart = "<root>";
-
-        private const string XmlNamespaceEnd = "</root>";
-
-        public static XmlDocument GetXmlDocument(string element, bool isXml)
-        {
-            var xmlDocument = new XmlDocument
-            {
-                PreserveWhitespace = true
-            };
-            try
-            {
-                if (isXml)
-                {
-                    xmlDocument.LoadXml(XmlDeclaration + XmlNamespaceStart + element + XmlNamespaceEnd);
-                }
-                else
-                {
-                    xmlDocument.LoadXml(XmlDeclaration + XmlNamespaceStart + Main.Instance.ParseApi.HtmlToXml(element) + XmlNamespaceEnd);
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-            //catch(Exception e)
-            //{
-            //    TraceUtils.Warn(e.ToString());
-            //    throw e;
-            //}
-            return xmlDocument;
-        }
-
-        public static void ParseHtmlElement(string htmlElement, out string tagName, out string innerXml, out NameValueCollection attributes)
-        {
-            tagName = string.Empty;
-            innerXml = string.Empty;
-            attributes = new NameValueCollection();
-
-            var document = GetXmlDocument(htmlElement, false);
-            XmlNode elementNode = document.DocumentElement;
-            if (elementNode == null) return;
-
-            elementNode = elementNode.FirstChild;
-            tagName = elementNode.Name;
-            innerXml = elementNode.InnerXml;
-            if (elementNode.Attributes == null) return;
-
-            var elementIe = elementNode.Attributes.GetEnumerator();
-            while (elementIe.MoveNext())
-            {
-                var attr = (XmlAttribute)elementIe.Current;
-                if (attr != null)
-                {
-                    var attributeName = attr.Name;
-                    attributes.Add(attributeName, attr.Value);
-                }
-            }
-        }
-
-        public static string GetHtmlElementById(string html, string id)
-        {
-            const RegexOptions options = RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.IgnoreCase;
-
-            var regex = $"<input\\s*[^>]*?id\\s*=\\s*(\"{id}\"|\'{id}\'|{id}).*?>";
-            var reg = new Regex(regex, options);
-            var match = reg.Match(html);
-            if (match.Success)
-            {
-                return match.Value;
-            }
-
-            regex = $"<\\w+\\s*[^>]*?id\\s*=\\s*(\"{id}\"|\'{id}\'|{id})[^>]*/\\s*>";
-            reg = new Regex(regex, options);
-            match = reg.Match(html);
-            if (match.Success)
-            {
-                return match.Value;
-            }
-
-            regex = $"<(\\w+?)\\s*[^>]*?id\\s*=\\s*(\"{id}\"|\'{id}\'|{id}).*?>[^>]*</\\1[^>]*>";
-            reg = new Regex(regex, options);
-            match = reg.Match(html);
-            if (match.Success)
-            {
-                return match.Value;
-            }
-
-            return string.Empty;
-        }
-
-        public static string GetHtmlElementByRole(string html, string role)
-        {
-            const RegexOptions options = RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.IgnoreCase;
-
-            var regex = $"<input\\s*[^>]*?role\\s*=\\s*(\"{role}\"|\'{role}\'|{role}).*?>";
-            var reg = new Regex(regex, options);
-            var match = reg.Match(html);
-            if (match.Success)
-            {
-                return match.Value;
-            }
-
-            regex = $"<\\w+\\s*[^>]*?role\\s*=\\s*(\"{role}\"|\'{role}\'|{role})[^>]*/\\s*>";
-            reg = new Regex(regex, options);
-            match = reg.Match(html);
-            if (match.Success)
-            {
-                return match.Value;
-            }
-
-            regex = $"<(\\w+?)\\s*[^>]*?role\\s*=\\s*(\"{role}\"|\'{role}\'|{role}).*?>[^>]*</\\1[^>]*>";
-            reg = new Regex(regex, options);
-            match = reg.Match(html);
-            if (match.Success)
-            {
-                return match.Value;
-            }
-
-            return string.Empty;
-        }
-
-        public static void RewriteSubmitButton(StringBuilder builder, string clickString)
-        {
-            var submitElement = GetHtmlElementByRole(builder.ToString(), "submit");
-            if (string.IsNullOrEmpty(submitElement))
-            {
-                submitElement = GetHtmlElementById(builder.ToString(), "submit");
-            }
-            if (!string.IsNullOrEmpty(submitElement))
-            {
-                var document = GetXmlDocument(submitElement, false);
-                XmlNode elementNode = document.DocumentElement;
-                if (elementNode != null)
-                {
-                    elementNode = elementNode.FirstChild;
-                    if (elementNode.Attributes != null)
-                    {
-                        var elementIe = elementNode.Attributes.GetEnumerator();
-                        var attributes = new StringDictionary();
-                        while (elementIe.MoveNext())
-                        {
-                            var attr = (XmlAttribute)elementIe.Current;
-                            if (attr != null)
-                            {
-                                var attributeName = attr.Name.ToLower();
-                                if (attributeName == "href")
-                                {
-                                    attributes.Add(attr.Name, "javascript:;");
-                                }
-                                else if (attributeName != "onclick")
-                                {
-                                    attributes.Add(attr.Name, attr.Value);
-                                }
-                            }
-                        }
-                        attributes.Add("onclick", clickString);
-                        attributes.Remove("id");
-                        attributes.Remove("name");
-
-                        //attributes.Add("id", "submit_" + styleID);
-
-                        if (EqualsIgnoreCase(elementNode.Name, "a"))
-                        {
-                            attributes.Remove("href");
-                            attributes.Add("href", "javascript:;");
-                        }
-
-                        if (!string.IsNullOrEmpty(elementNode.InnerXml))
-                        {
-                            builder.Replace(submitElement,
-                                $@"<{elementNode.Name} {ToAttributesString(attributes)}>{elementNode.InnerXml}</{elementNode
-                                    .Name}>");
-                        }
-                        else
-                        {
-                            builder.Replace(submitElement,
-                                $@"<{elementNode.Name} {ToAttributesString(attributes)}/>");
-                        }
-                    }
-                }
-            }
-        }
-
-        public static string ToAttributesString(NameValueCollection attributes)
-        {
-            var builder = new StringBuilder();
-            if (attributes != null && attributes.Count > 0)
-            {
-                foreach (string key in attributes.Keys)
-                {
-                    var value = attributes[key];
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        value = value.Replace("\"", "'");
-                    }
-                    builder.Append($@"{key}=""{value}"" ");
-                }
-                builder.Length--;
-            }
-            return builder.ToString();
-        }
-
-        public static string ToAttributesString(StringDictionary attributes)
-        {
-            var builder = new StringBuilder();
-            if (attributes != null && attributes.Count > 0)
-            {
-                foreach (string key in attributes.Keys)
-                {
-                    var value = attributes[key];
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        value = value.Replace("\"", "'");
-                    }
-                    builder.Append($@"{key}=""{value}"" ");
-                }
-                builder.Length--;
-            }
-            return builder.ToString();
         }
 
         public static int ParseInt(object o)
@@ -651,28 +296,6 @@ namespace SS.Shopping.Core
   button: '关 闭',
 }});";
 
-            return script;
-        }
-
-        public static string SwalSuccess(string title, string text)
-        {
-            return SwalSuccess(title, text, "关 闭", null);
-        }
-
-        public static string SwalSuccess(string title, string text, string button, string scripts)
-        {
-            if (!string.IsNullOrEmpty(scripts))
-            {
-                scripts = $@".then(function (value) {{
-  {scripts}
-}})";
-            }
-            var script = $@"swal({{
-  title: '{title}',
-  text: '{ReplaceNewline(text, string.Empty)}',
-  icon: 'success',
-  button: '{button}',
-}}){scripts};";
             return script;
         }
 

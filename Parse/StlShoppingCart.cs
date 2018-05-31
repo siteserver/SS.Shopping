@@ -87,8 +87,8 @@ namespace SS.Shopping.Parse
             var loginToCartUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(currentUrl)}";
             var loginToPayUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(payUrl)}";
 
-            var html = Main.Instance.ParseApi.ParseInnerXml(context.StlInnerXml, context);
-            if (string.IsNullOrEmpty(context.StlInnerXml))
+            var html = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+            if (string.IsNullOrEmpty(context.StlInnerHtml))
             {
                 html = $@"
 <div class=""cart"">
