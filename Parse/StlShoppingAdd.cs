@@ -78,7 +78,7 @@ namespace SS.Shopping.Parse
             int count = 1;
             var successUrl = string.Empty;
 
-            foreach (var attriName in context.StlAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.AllKeys)
             {
                 var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ProductId)))
@@ -120,7 +120,7 @@ namespace SS.Shopping.Parse
 
             var stlAnchor = new HtmlAnchor();
 
-            foreach (var attributeName in context.StlAttributes.Keys)
+            foreach (var attributeName in context.StlAttributes.AllKeys)
             {
                 stlAnchor.Attributes.Add(attributeName, context.StlAttributes[attributeName]);
             }

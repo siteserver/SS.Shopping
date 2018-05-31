@@ -47,7 +47,7 @@ namespace SS.Shopping.Parse
             var cartUrl = string.Empty;
             var continueUrl = string.Empty;
 
-            foreach (var attriName in context.StlAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.AllKeys)
             {
                 var value = context.StlAttributes[attriName];
 

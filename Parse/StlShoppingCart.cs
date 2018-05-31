@@ -66,7 +66,7 @@ namespace SS.Shopping.Parse
             var payUrl = string.Empty;
             var loginUrl = string.Empty;
 
-            foreach (var attriName in context.StlAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.AllKeys)
             {
                 var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributePayUrl))

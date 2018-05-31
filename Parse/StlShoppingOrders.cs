@@ -106,7 +106,7 @@ namespace SS.Shopping.Parse
             var orderUrl = string.Empty;
             var weixinName = string.Empty;
 
-            foreach (var attriName in context.StlAttributes.Keys)
+            foreach (var attriName in context.StlAttributes.AllKeys)
             {
                 var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributeSuccessUrl))
