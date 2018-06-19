@@ -94,7 +94,8 @@ namespace SS.Shopping
                 .AddStlElementParser(StlShoppingPay.ElementName, StlShoppingPay.Parse)
                 .AddStlElementParser(StlShoppingPaySuccess.ElementName, StlShoppingPaySuccess.Parse)
                 .AddStlElementParser(StlShoppingOrders.ElementName, StlShoppingOrders.Parse)
-                .AddStlElementParser(StlShoppingOrder.ElementName, StlShoppingOrder.Parse);
+                .AddStlElementParser(StlShoppingOrder.ElementName, StlShoppingOrder.Parse)
+                ;
 
             service.ApiPost += (sender, args) =>
             {

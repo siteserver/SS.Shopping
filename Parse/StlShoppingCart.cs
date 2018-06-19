@@ -7,16 +7,12 @@ using SS.Shopping.Model;
 
 namespace SS.Shopping.Parse
 {
-    public class StlShoppingCart
+    public static class StlShoppingCart
     {
-        private StlShoppingCart()
-        {
-        }
-
         public const string ElementName = "stl:shoppingCart";
 
-        public const string AttributeLoginUrl = "loginUrl";
-        public const string AttributePayUrl = "payUrl";
+        private const string AttributeLoginUrl = "loginUrl";
+        private const string AttributePayUrl = "payUrl";
 
         public static object ApiCartGet(IRequest context)
         {

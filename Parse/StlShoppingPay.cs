@@ -216,7 +216,11 @@ namespace SS.Shopping.Parse
                 return paymentApi.ChargeByJdpay(siteInfo.SiteName, amount, orderNo, successUrl);
             }
 
-            return null;
+            return new
+            {
+                guid,
+                amount
+            };
         }
 
         public static HttpResponseMessage ApiPayQrCode(IRequest context)
