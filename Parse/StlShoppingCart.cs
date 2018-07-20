@@ -131,8 +131,8 @@ namespace SS.Shopping.Parse
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
             var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
             var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
-            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiCartGet));
-            var apiSaveUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiCartSave));
+            var apiGetUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiCartGet)}";
+            var apiSaveUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiCartSave)}";
 
             html += $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>

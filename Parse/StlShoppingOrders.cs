@@ -82,10 +82,10 @@ namespace SS.Shopping.Parse
             }
             if (channel == "weixin")
             {
-                var notifyUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayWeixinNotify), orderNo);
+                var notifyUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(StlShoppingPay.ApiPayWeixinNotify)}/{orderNo}";
                 var url = HttpUtility.UrlEncode(paymentApi.ChargeByWeixin(siteInfo.SiteName, amount, orderNo, notifyUrl));
                 var qrCodeUrl =
-                    $"{Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayQrCode))}?qrcode={url}";
+                    $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(StlShoppingPay.ApiPayQrCode)}?qrcode={url}";
                 return new
                 {
                     qrCodeUrl,
@@ -271,10 +271,10 @@ namespace SS.Shopping.Parse
             var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
             var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
             var orderCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/order.css");
-            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersGet));
-            var apiRemoveOrderUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersRemove));
-            var apiPayUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrdersPay));
-            var apiWeixinIntervalUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayWeixinInterval));
+            var apiGetUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiOrdersGet)}";
+            var apiRemoveOrderUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiOrdersRemove)}";
+            var apiPayUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiOrdersPay)}";
+            var apiWeixinIntervalUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(StlShoppingPay.ApiPayWeixinInterval)}";
 
             html += $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>

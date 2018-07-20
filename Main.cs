@@ -100,75 +100,73 @@ namespace SS.Shopping
             service.ApiPost += (sender, args) =>
             {
                 var request = args.Request;
-                var action = args.Action;
-                var id = args.Id;
 
-                if (!string.IsNullOrEmpty(action) && !string.IsNullOrEmpty(id))
+                if (!string.IsNullOrEmpty(args.RouteResource) && !string.IsNullOrEmpty(args.RouteId))
                 {
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayWeixinNotify)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPayWeixinNotify)))
                     {
-                        return StlShoppingPay.ApiPayWeixinNotify(request, id);
+                        return StlShoppingPay.ApiPayWeixinNotify(request, args.RouteId);
                     }
                 }
-                else if (!string.IsNullOrEmpty(action))
+                else if (!string.IsNullOrEmpty(args.RouteResource))
                 {
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingAdd.ApiAdd)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingAdd.ApiAdd)))
                     {
                         return StlShoppingAdd.ApiAdd(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingAddSuccess.ApiAddSuccessGet)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingAddSuccess.ApiAddSuccessGet)))
                     {
                         return StlShoppingAddSuccess.ApiAddSuccessGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingCart.ApiCartGet)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingCart.ApiCartGet)))
                     {
                         return StlShoppingCart.ApiCartGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingCart.ApiCartSave)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingCart.ApiCartSave)))
                     {
                         return StlShoppingCart.ApiCartSave(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrder.ApiOrderGet)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingOrder.ApiOrderGet)))
                     {
                         return StlShoppingOrder.ApiOrderGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrders.ApiOrdersGet)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingOrders.ApiOrdersGet)))
                     {
                         return StlShoppingOrders.ApiOrdersGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrders.ApiOrdersRemove)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingOrders.ApiOrdersRemove)))
                     {
                         return StlShoppingOrders.ApiOrdersRemove(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingOrders.ApiOrdersPay)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingOrders.ApiOrdersPay)))
                     {
                         return StlShoppingOrders.ApiOrdersPay(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayGet)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPayGet)))
                     {
                         return StlShoppingPay.ApiPayGet(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPaySaveAddress)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPaySaveAddress)))
                     {
                         return StlShoppingPay.ApiPaySaveAddress(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayRemoveAddress)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPayRemoveAddress)))
                     {
                         return StlShoppingPay.ApiPayRemoveAddress(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPaySetAddressAndDelivery)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPaySetAddressAndDelivery)))
                     {
                         return StlShoppingPay.ApiPaySetAddressAndDelivery(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPay)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPay)))
                     {
                         return StlShoppingPay.ApiPay(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPay.ApiPayWeixinInterval)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPayWeixinInterval)))
                     {
                         return StlShoppingPay.ApiPayWeixinInterval(request);
                     }
-                    if (Utils.EqualsIgnoreCase(action, nameof(StlShoppingPaySuccess.ApiPaySuccessGet)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPaySuccess.ApiPaySuccessGet)))
                     {
                         return StlShoppingPaySuccess.ApiPaySuccessGet(request);
                     }
@@ -179,9 +177,9 @@ namespace SS.Shopping
 
             service.ApiGet += (sender, args) =>
             {
-                if (!string.IsNullOrEmpty(args.Action))
+                if (!string.IsNullOrEmpty(args.RouteResource))
                 {
-                    if (Utils.EqualsIgnoreCase(args.Action, nameof(StlShoppingPay.ApiPayQrCode)))
+                    if (Utils.EqualsIgnoreCase(args.RouteResource, nameof(StlShoppingPay.ApiPayQrCode)))
                     {
                         return StlShoppingPay.ApiPayQrCode(args.Request);
                     }

@@ -103,7 +103,7 @@ namespace SS.Shopping.Parse
 
             var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
             var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
-            var apiUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiAddSuccessGet));
+            var apiUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiAddSuccessGet)}";
 
             return $@"
 {template}

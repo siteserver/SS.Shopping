@@ -39,7 +39,7 @@ namespace SS.Shopping.Pages
             _deliveryId = Utils.ParseInt(Request.QueryString["deliveryId"]);
             _areaId = Utils.ParseInt(Request.QueryString["areaId"]);
 
-            if (!Main.Instance.AdminApi.IsSiteAuthorized(_siteId))
+            if (!Main.Instance.AdminApi.HasSitePermissions(_siteId, Main.Instance.Id))
             {
                 Response.Write("<h1>未授权访问</h1>");
                 Response.End();

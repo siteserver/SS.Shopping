@@ -201,10 +201,10 @@ namespace SS.Shopping.Parse
             }
             if (channel == "weixin")
             {
-                var notifyUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayWeixinNotify), orderNo);
+                var notifyUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPayWeixinNotify)}/{orderNo}";
                 var url = HttpUtility.UrlEncode(paymentApi.ChargeByWeixin(siteInfo.SiteName, amount, orderNo, notifyUrl));
                 var qrCodeUrl =
-                    $"{Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayQrCode))}?qrcode={url}";
+                    $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPayQrCode)}?qrcode={url}";
                 return new
                 {
                     qrCodeUrl,
@@ -311,12 +311,12 @@ namespace SS.Shopping.Parse
             var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
             var locationCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/location.css");
             var locationJsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/location.js");
-            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayGet));
-            var apiSaveAddressUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPaySaveAddress));
-            var apiRemoveAddressUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayRemoveAddress));
-            var apiSetAddressAndDelivery = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPaySetAddressAndDelivery));
-            var apiPayUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPay));
-            var apiWeixinIntervalUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiPayWeixinInterval));
+            var apiGetUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPayGet)}";
+            var apiSaveAddressUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPaySaveAddress)}";
+            var apiRemoveAddressUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPayRemoveAddress)}";
+            var apiSetAddressAndDelivery = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPaySetAddressAndDelivery)}";
+            var apiPayUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPay)}";
+            var apiWeixinIntervalUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPayWeixinInterval)}";
 
             var paymentApi = new PaymentApi(context.SiteId);
 

@@ -203,9 +203,9 @@ namespace SS.Shopping.Parse
             var deviceUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/device.min.js");
             var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
             var orderCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/order.css");
-            var apiGetUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(ApiOrderGet));
-            var apiPayUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingOrders.ApiOrdersPay));
-            var apiWeixinIntervalUrl = Main.Instance.PluginApi.GetPluginApiUrl(nameof(StlShoppingPay.ApiPayWeixinInterval));
+            var apiGetUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiOrderGet)}";
+            var apiPayUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(StlShoppingOrders.ApiOrdersPay)}";
+            var apiWeixinIntervalUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(StlShoppingPay.ApiPayWeixinInterval)}";
 
             html += $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
