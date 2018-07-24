@@ -63,7 +63,7 @@ namespace SS.Shopping.Parse
 
             if (string.IsNullOrEmpty(continueUrl))
             {
-                continueUrl = Main.Instance.FilesApi.GetSiteUrl(context.SiteId);
+                continueUrl = Main.Instance.SiteApi.GetSiteUrl(context.SiteId);
             }
 
             string template;

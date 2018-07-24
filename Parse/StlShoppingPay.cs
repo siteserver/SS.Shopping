@@ -155,7 +155,7 @@ namespace SS.Shopping.Parse
             var successUrl = context.GetPostString("successUrl");
             if (string.IsNullOrEmpty(successUrl))
             {
-                successUrl = Main.Instance.FilesApi.GetSiteUrl(siteId);
+                successUrl = Main.Instance.SiteApi.GetSiteUrl(siteId);
             }
 
             var guid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
@@ -258,7 +258,7 @@ namespace SS.Shopping.Parse
 
             bool isPaied;
             string responseXml;
-            paymentApi.NotifyByWeixin(context.HttpRequest, out isPaied, out responseXml);
+            paymentApi.NotifyByWeixin(HttpContext.Current.Request, out isPaied, out responseXml);
             if (isPaied)
             {
                 Main.OrderDao.UpdateIsPaied(orderNo);

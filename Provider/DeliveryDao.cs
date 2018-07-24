@@ -63,9 +63,9 @@ namespace SS.Shopping.Provider
 
         private readonly DatabaseType _databaseType;
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
-        public DeliveryDao(DatabaseType databaseType, string connectionString, IDataApi dataApi)
+        public DeliveryDao(DatabaseType databaseType, string connectionString, IDatabaseApi dataApi)
         {
             _databaseType = databaseType;
             _connectionString = connectionString;

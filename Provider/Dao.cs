@@ -6,9 +6,9 @@ namespace SS.Shopping.Provider
     public class Dao
     {
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
-        public Dao(string connectionString, IDataApi dataApi)
+        public Dao(string connectionString, IDatabaseApi dataApi)
         {
             _connectionString = connectionString;
             _helper = dataApi;

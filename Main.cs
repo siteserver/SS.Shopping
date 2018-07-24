@@ -40,12 +40,12 @@ namespace SS.Shopping
         {
             Instance = this;
 
-            Dao = new Dao(ConnectionString, DataApi);
-            AddressDao = new AddressDao(ConnectionString, DataApi);
-            AreaDao = new AreaDao(ConnectionString, DataApi);
-            CartDao = new CartDao(ConnectionString, DataApi);
-            DeliveryDao = new DeliveryDao(DatabaseType, ConnectionString, DataApi);
-            OrderDao = new OrderDao(ConnectionString, DataApi);
+            Dao = new Dao(ConnectionString, DatabaseApi);
+            AddressDao = new AddressDao(ConnectionString, DatabaseApi);
+            AreaDao = new AreaDao(ConnectionString, DatabaseApi);
+            CartDao = new CartDao(ConnectionString, DatabaseApi);
+            DeliveryDao = new DeliveryDao(DatabaseType, ConnectionString, DatabaseApi);
+            OrderDao = new OrderDao(ConnectionString, DatabaseApi);
 
             service.AddSiteMenu(siteId => new Menu
                 {

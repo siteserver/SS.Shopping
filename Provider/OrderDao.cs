@@ -11,9 +11,9 @@ namespace SS.Shopping.Provider
         public const string TableName = "ss_shopping_order";
 
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
-        public OrderDao(string connectionString, IDataApi dataApi)
+        public OrderDao(string connectionString, IDatabaseApi dataApi)
         {
             _connectionString = connectionString;
             _helper = dataApi;
@@ -439,12 +439,12 @@ namespace SS.Shopping.Provider
 
             if (!string.IsNullOrEmpty(state))
             {
-                state = _helper.FilterSql(state);
+                state = Main.Instance.UtilsApi.FilterSql(state);
                 sqlString += $" AND {nameof(OrderInfo.State)} = '{state}'";
             }
             if (!string.IsNullOrEmpty(keyword))
             {
-                keyword = _helper.FilterSql(keyword);
+                keyword = Main.Instance.UtilsApi.FilterSql(keyword);
                 sqlString += $" AND ({nameof(OrderInfo.Guid)} LIKE '%{keyword}%' OR {nameof(OrderInfo.RealName)} LIKE '%{keyword}%' OR {nameof(OrderInfo.Mobile)} LIKE '%{keyword}%' OR {nameof(OrderInfo.Location)} LIKE '%{keyword}%' OR {nameof(OrderInfo.Address)} LIKE '%{keyword}%')";
             }
             sqlString += $" ORDER BY {nameof(OrderInfo.Id)} DESC";

@@ -62,7 +62,7 @@ namespace SS.Shopping.Parse
             var successUrl = context.GetPostString("successUrl");
             if (string.IsNullOrEmpty(successUrl))
             {
-                successUrl = Main.Instance.FilesApi.GetSiteUrl(siteId);
+                successUrl = Main.Instance.SiteApi.GetSiteUrl(siteId);
             }
 
             var siteInfo = Main.Instance.SiteApi.GetSiteInfo(siteId);

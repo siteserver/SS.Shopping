@@ -10,9 +10,9 @@ namespace SS.Shopping.Provider
         public const string TableName = "ss_shopping_address";
 
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
-        public AddressDao(string connectionString, IDataApi dataApi)
+        public AddressDao(string connectionString, IDatabaseApi dataApi)
         {
             _connectionString = connectionString;
             _helper = dataApi;
