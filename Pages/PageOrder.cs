@@ -59,7 +59,7 @@ namespace SS.Shopping.Pages
             _state = Request.QueryString["state"];
             _keyword = Request.QueryString["keyword"];
 
-            if (!Main.Instance.AdminApi.HasSitePermissions(_siteId, Main.Instance.Id))
+            if (!Main.Instance.Request.AdminPermissions.HasSitePermissions(_siteId, Main.Instance.Id))
 	        {
 	            Response.Write("<h1>未授权访问</h1>");
 	            Response.End();

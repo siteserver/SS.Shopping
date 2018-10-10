@@ -188,7 +188,15 @@ namespace SS.Shopping.Parse
 
             orderInfo.Id = Main.OrderDao.Insert(orderInfo);
 
-            Main.CartDao.UpdateOrderId(cartIdList, orderInfo.Id);
+            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var newCardIdList = new List<int>();
+            foreach (var newCardInfo in cartInfoList)
+            {
+                newCardIdList.Add(newCardInfo.Id);
+            }
+
+            //Main.CartDao.UpdateOrderId(cartIdList, orderInfo.Id);
+            Main.CartDao.UpdateOrderId(newCardIdList, orderInfo.Id);
 
             var amount = totalFee + deliveryFee;
             var orderNo = guid;
