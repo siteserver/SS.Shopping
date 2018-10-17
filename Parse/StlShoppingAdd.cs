@@ -5,6 +5,7 @@ using System.Web.UI.HtmlControls;
 using SiteServer.Plugin;
 using SS.Shopping.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Parse
 {
@@ -45,14 +46,14 @@ namespace SS.Shopping.Parse
                 AddDate = DateTime.Now
             };
 
-            var cartId = Main.CartDao.GetCartId(siteId, sessionId, productId);
+            var cartId = CartDao.GetCartId(siteId, sessionId, productId);
             if (cartId == 0)
             {
-                cartId = Main.CartDao.Insert(cartInfo);
+                cartId = CartDao.Insert(cartInfo);
             }
             else
             {
-                cartInfo = Main.CartDao.GetCartInfo(cartId);
+                cartInfo = CartDao.GetCartInfo(cartId);
                 cartInfo.UserName = context.UserName;
                 cartInfo.ProductName = productName;
                 cartInfo.ImageUrl = imageUrl;
@@ -61,7 +62,7 @@ namespace SS.Shopping.Parse
                 cartInfo.IsDelivery = isDelivery;
                 cartInfo.Count += count;
                 cartInfo.AddDate = DateTime.Now;
-                Main.CartDao.Update(cartInfo);
+                CartDao.Update(cartInfo);
             }
 
             return cartId;

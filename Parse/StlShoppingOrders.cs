@@ -5,6 +5,7 @@ using System.Web;
 using SiteServer.Plugin;
 using SS.Payment.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Parse
 {
@@ -24,12 +25,12 @@ namespace SS.Shopping.Parse
             if (context.IsUserLoggin)
             {
                 orderInfoList = string.IsNullOrEmpty(type)
-                    ? Main.OrderDao.GetOrderInfoList(context.UserName, string.Empty)
-                    : Main.OrderDao.GetOrderInfoList(context.UserName, Convert.ToBoolean(type));
+                    ? OrderDao.GetOrderInfoList(context.UserName, string.Empty)
+                    : OrderDao.GetOrderInfoList(context.UserName, Convert.ToBoolean(type));
 
                 foreach (var orderInfo in orderInfoList)
                 {
-                    orderInfo.CartInfoList = Main.CartDao.GetCartInfoList(orderInfo.Id);
+                    orderInfo.CartInfoList = CartDao.GetCartInfoList(orderInfo.Id);
                 }
             }
 
@@ -45,7 +46,7 @@ namespace SS.Shopping.Parse
             if (context.IsUserLoggin)
             {
                 var orderId = context.GetPostInt("orderId");
-                Main.OrderDao.Delete(orderId);
+                OrderDao.Delete(orderId);
             }
 
             return new { };
@@ -66,7 +67,7 @@ namespace SS.Shopping.Parse
             }
 
             var siteInfo = Context.SiteApi.GetSiteInfo(siteId);
-            var orderInfo = Main.OrderDao.GetOrderInfo(orderId);
+            var orderInfo = OrderDao.GetOrderInfo(orderId);
             orderInfo.Channel = channel;
 
             var paymentApi = new PaymentApi(siteId);

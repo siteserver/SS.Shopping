@@ -5,18 +5,9 @@ using SS.Shopping.Model;
 
 namespace SS.Shopping.Provider
 {
-    public class AddressDao
+    public static class AddressDao
     {
         public const string TableName = "ss_shopping_address";
-
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public AddressDao(string connectionString, IDatabaseApi dataApi)
-        {
-            _connectionString = connectionString;
-            _helper = dataApi;
-        }
 
         public static List<TableColumn> Columns => new List<TableColumn>
         {
@@ -80,7 +71,7 @@ namespace SS.Shopping.Provider
             }
         };
 
-        public int Insert(AddressInfo addressInfo)
+        public static int Insert(AddressInfo addressInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
            ({nameof(AddressInfo.UserName)}, 
@@ -105,21 +96,21 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(addressInfo.UserName), addressInfo.UserName),
-                _helper.GetParameter(nameof(addressInfo.SessionId), addressInfo.SessionId),
-                _helper.GetParameter(nameof(addressInfo.RealName), addressInfo.RealName),
-                _helper.GetParameter(nameof(addressInfo.Mobile), addressInfo.Mobile),
-                _helper.GetParameter(nameof(addressInfo.Tel), addressInfo.Tel),
-                _helper.GetParameter(nameof(addressInfo.Location), addressInfo.Location),
-                _helper.GetParameter(nameof(addressInfo.Address), addressInfo.Address),
-                _helper.GetParameter(nameof(addressInfo.ZipCode), addressInfo.ZipCode),
-                _helper.GetParameter(nameof(addressInfo.IsDefault), addressInfo.IsDefault)
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.UserName), addressInfo.UserName),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.SessionId), addressInfo.SessionId),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.RealName), addressInfo.RealName),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Mobile), addressInfo.Mobile),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Tel), addressInfo.Tel),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Location), addressInfo.Location),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Address), addressInfo.Address),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.ZipCode), addressInfo.ZipCode),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.IsDefault), addressInfo.IsDefault)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(AddressInfo.Id), _connectionString, sqlString, parameters.ToArray());
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(AddressInfo.Id), Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Update(AddressInfo addressInfo)
+        public static void Update(AddressInfo addressInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)}, 
@@ -135,106 +126,106 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(addressInfo.UserName), addressInfo.UserName),
-                _helper.GetParameter(nameof(addressInfo.SessionId), addressInfo.SessionId),
-                _helper.GetParameter(nameof(addressInfo.RealName), addressInfo.RealName),
-                _helper.GetParameter(nameof(addressInfo.Mobile), addressInfo.Mobile),
-                _helper.GetParameter(nameof(addressInfo.Tel), addressInfo.Tel),
-                _helper.GetParameter(nameof(addressInfo.Location), addressInfo.Location),
-                _helper.GetParameter(nameof(addressInfo.Address), addressInfo.Address),
-                _helper.GetParameter(nameof(addressInfo.ZipCode), addressInfo.ZipCode),
-                _helper.GetParameter(nameof(addressInfo.IsDefault), addressInfo.IsDefault),
-                _helper.GetParameter(nameof(addressInfo.Id), addressInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.UserName), addressInfo.UserName),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.SessionId), addressInfo.SessionId),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.RealName), addressInfo.RealName),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Mobile), addressInfo.Mobile),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Tel), addressInfo.Tel),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Location), addressInfo.Location),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Address), addressInfo.Address),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.ZipCode), addressInfo.ZipCode),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.IsDefault), addressInfo.IsDefault),
+                Context.DatabaseApi.GetParameter(nameof(addressInfo.Id), addressInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void SetDefaultToFalse(string userName, string sessionId)
+        public static void SetDefaultToFalse(string userName, string sessionId)
         {
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return;
 
             string sqlString = $"UPDATE {TableName} SET {nameof(AddressInfo.IsDefault)} = @{nameof(AddressInfo.IsDefault)} WHERE";
             var parameters = new List<IDataParameter>{
-                _helper.GetParameter(nameof(AddressInfo.IsDefault), false)
+                Context.DatabaseApi.GetParameter(nameof(AddressInfo.IsDefault), false)
             };
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)} OR {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
             else if (!string.IsNullOrEmpty(userName))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
             }
             else if (!string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void SetDefault(string userName, string sessionId, int addressId)
+        public static void SetDefault(string userName, string sessionId, int addressId)
         {
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return;
 
             string sqlString = $"UPDATE {TableName} SET {nameof(AddressInfo.IsDefault)} = @{nameof(AddressInfo.IsDefault)} WHERE";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(AddressInfo.IsDefault), false)
+                Context.DatabaseApi.GetParameter(nameof(AddressInfo.IsDefault), false)
             };
             string sqlString2 = $"UPDATE {TableName} SET {nameof(AddressInfo.IsDefault)} = @{nameof(AddressInfo.IsDefault)} WHERE {nameof(AddressInfo.Id)} = @{nameof(AddressInfo.Id)} AND";
             var parameters2 = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(AddressInfo.IsDefault), true),
-                _helper.GetParameter(nameof(AddressInfo.Id), addressId)
+                Context.DatabaseApi.GetParameter(nameof(AddressInfo.IsDefault), true),
+                Context.DatabaseApi.GetParameter(nameof(AddressInfo.Id), addressId)
             };
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" ({nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)} OR {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)})";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
 
                 sqlString2 += $" ({nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)} OR {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)})";
-                parameters2.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
-                parameters2.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters2.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters2.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
             else if (!string.IsNullOrEmpty(userName))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
                 sqlString2 += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)}";
-                parameters2.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters2.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
             }
             else if (!string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
                 sqlString2 += $" {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters2.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters2.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
-            _helper.ExecuteNonQuery(_connectionString, sqlString2, parameters2.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString2, parameters2.ToArray());
         }
 
-        public void Delete(int addressId)
+        public static void Delete(int addressId)
         {
             string sqlString = $"DELETE FROM {TableName} WHERE {nameof(AddressInfo.Id)} = @{nameof(AddressInfo.Id)}";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(AddressInfo.Id), addressId)
+                Context.DatabaseApi.GetParameter(nameof(AddressInfo.Id), addressId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Delete(string userName, string sessionId)
+        public static void Delete(string userName, string sessionId)
         {
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return;
 
@@ -244,23 +235,23 @@ namespace SS.Shopping.Provider
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)} OR {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
             else if (!string.IsNullOrEmpty(userName))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
             }
             else if (!string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public List<AddressInfo> GetAddressInfoList(string userName, string sessionId)
+        public static List<AddressInfo> GetAddressInfoList(string userName, string sessionId)
         {
             var list = new List<AddressInfo>();
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return list;
@@ -282,23 +273,23 @@ namespace SS.Shopping.Provider
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)} OR {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
             else if (!string.IsNullOrEmpty(userName))
             {
                 sqlString += $" {nameof(AddressInfo.UserName)} = @{nameof(AddressInfo.UserName)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.UserName), userName));
             }
             else if (!string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" {nameof(AddressInfo.SessionId)} = @{nameof(AddressInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(AddressInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(AddressInfo.SessionId), sessionId));
             }
 
             sqlString += $" ORDER BY {nameof(AddressInfo.Id)} DESC";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -310,7 +301,7 @@ namespace SS.Shopping.Provider
             return list;
         }
 
-        public AddressInfo GetAddressInfo(int addressId)
+        public static AddressInfo GetAddressInfo(int addressId)
         {
             AddressInfo addressInfo = null;
 
@@ -326,7 +317,7 @@ namespace SS.Shopping.Provider
             {nameof(AddressInfo.IsDefault)}
             FROM {TableName} WHERE {nameof(AddressInfo.Id)} = {addressId}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -367,6 +358,5 @@ namespace SS.Shopping.Provider
 
             return addressInfo;
         }
-
     }
 }

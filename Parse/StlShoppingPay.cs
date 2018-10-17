@@ -12,6 +12,7 @@ using System.Web;
 using SiteServer.Plugin;
 using SS.Payment.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 using ThoughtWorks.QRCode.Codec;
 using Utils = SS.Shopping.Core.Utils;
 
@@ -31,11 +32,11 @@ namespace SS.Shopping.Parse
 
             if (context.IsUserLoggin)
             {
-                Main.CartDao.UpdateUserName(siteId, sessionId, context.UserName);
+                CartDao.UpdateUserName(siteId, sessionId, context.UserName);
             }
 
-            var addressInfoList = Main.AddressDao.GetAddressInfoList(context.UserName, sessionId);
-            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var addressInfoList = AddressDao.GetAddressInfoList(context.UserName, sessionId);
+            var cartInfoList = CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
 
             AddressInfo addressInfo = null;
             foreach (var addInfo in addressInfoList)
@@ -47,7 +48,7 @@ namespace SS.Shopping.Parse
                 addressInfo = addressInfoList[0];
             }
 
-            var deliveryInfoList = Main.DeliveryDao.GetDeliveryInfoList(siteId);
+            var deliveryInfoList = DeliveryDao.GetDeliveryInfoList(siteId);
             DeliveryInfo deliveryInfo = null;
             if (deliveryInfoList.Count > 0)
             {
@@ -90,17 +91,17 @@ namespace SS.Shopping.Parse
 
             if (isEdit)
             {
-                Main.AddressDao.Update(addressInfo);
+                AddressDao.Update(addressInfo);
             }
             else
             {
-                addressInfo.Id = Main.AddressDao.Insert(addressInfo);
+                addressInfo.Id = AddressDao.Insert(addressInfo);
             }
 
-            Main.AddressDao.SetDefault(context.UserName, sessionId, addressInfo.Id);
+            AddressDao.SetDefault(context.UserName, sessionId, addressInfo.Id);
 
-            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
-            var deliveryInfo = Main.DeliveryDao.GetDeliveryInfo(deliveryId);
+            var cartInfoList = CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var deliveryInfo = DeliveryDao.GetDeliveryInfo(deliveryId);
             var deliveryFee = Utils.GetDeliveryFee(cartInfoList, addressInfo, deliveryInfo);
 
             return new
@@ -114,7 +115,7 @@ namespace SS.Shopping.Parse
         {
             var addressId = context.GetPostInt("addressId");
 
-            Main.AddressDao.Delete(addressId);
+            AddressDao.Delete(addressId);
 
             return new {};
         }
@@ -126,11 +127,11 @@ namespace SS.Shopping.Parse
             var addressId = context.GetPostInt("addressId");
             var deliveryId = context.GetPostInt("deliveryId");
 
-            Main.AddressDao.SetDefault(context.UserName, sessionId, addressId);
+            AddressDao.SetDefault(context.UserName, sessionId, addressId);
 
-            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
-            var addressInfo = Main.AddressDao.GetAddressInfo(addressId);
-            var deliveryInfo = Main.DeliveryDao.GetDeliveryInfo(deliveryId);
+            var cartInfoList = CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var addressInfo = AddressDao.GetAddressInfo(addressId);
+            var deliveryInfo = DeliveryDao.GetDeliveryInfo(deliveryId);
 
             var deliveryFee = Utils.GetDeliveryFee(cartInfoList, addressInfo, deliveryInfo);
 
@@ -163,7 +164,7 @@ namespace SS.Shopping.Parse
 
             var siteInfo = Context.SiteApi.GetSiteInfo(siteId);
 
-            var addressInfo = Main.AddressDao.GetAddressInfo(addressId);
+            var addressInfo = AddressDao.GetAddressInfo(addressId);
             var orderInfo = new OrderInfo
             {
                 SiteId = siteId,
@@ -186,17 +187,17 @@ namespace SS.Shopping.Parse
                 TotalCount = totalCount
             };
 
-            orderInfo.Id = Main.OrderDao.Insert(orderInfo);
+            orderInfo.Id = OrderDao.Insert(orderInfo);
 
-            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var cartInfoList = CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
             var newCardIdList = new List<int>();
             foreach (var newCardInfo in cartInfoList)
             {
                 newCardIdList.Add(newCardInfo.Id);
             }
 
-            //Main.CartDao.UpdateOrderId(cartIdList, orderInfo.Id);
-            Main.CartDao.UpdateOrderId(newCardIdList, orderInfo.Id);
+            //CartDao.UpdateOrderId(cartIdList, orderInfo.Id);
+            CartDao.UpdateOrderId(newCardIdList, orderInfo.Id);
 
             var amount = totalFee + deliveryFee;
             var orderNo = guid;
@@ -271,7 +272,7 @@ namespace SS.Shopping.Parse
             paymentApi.NotifyByWeixin(HttpContext.Current.Request, out isPaied, out responseXml);
             if (isPaied)
             {
-                Main.OrderDao.UpdateIsPaied(orderNo);
+                OrderDao.UpdateIsPaied(orderNo);
             }
 
             response.Content = new StringContent(responseXml);
@@ -285,7 +286,7 @@ namespace SS.Shopping.Parse
         {
             var orderNo = context.GetPostString("orderNo");
 
-            var isPaied = Main.OrderDao.IsPaied(orderNo);
+            var isPaied = OrderDao.IsPaied(orderNo);
 
             return new
             {

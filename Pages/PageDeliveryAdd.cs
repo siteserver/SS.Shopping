@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SS.Shopping.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Pages
 {
@@ -51,7 +52,7 @@ namespace SS.Shopping.Pages
             {
                 var array = Request.QueryString["idCollection"].Split(',');
                 var list = array.Select(s => Utils.ParseInt(s)).ToList();
-                Main.OrderDao.Delete(list);
+                OrderDao.Delete(list);
                 LtlMessage.Text = Utils.GetMessageHtml("删除成功！", true);
             }
             if (!string.IsNullOrEmpty(Request.QueryString["addArea"]))
@@ -60,28 +61,28 @@ namespace SS.Shopping.Pages
                 {
                     DeliveryId = _deliveryId
                 };
-                areaInfo.Id = Main.AreaDao.Insert(areaInfo);
+                areaInfo.Id = AreaDao.Insert(areaInfo);
                 Response.Redirect($@"{GetRedirectUrl(_siteId, _deliveryId)}");
                 return;
             }
             if (!string.IsNullOrEmpty(Request.QueryString["removeArea"]))
             {
-                Main.AreaDao.Delete(_areaId);
+                AreaDao.Delete(_areaId);
                 Response.Redirect($@"{GetRedirectUrl(_siteId, _deliveryId)}");
                 return;
             }
             if (!string.IsNullOrEmpty(Request.QueryString["saveCities"]))
             {
-                var areaInfo = Main.AreaDao.GetAreaInfo(_areaId);
+                var areaInfo = AreaDao.GetAreaInfo(_areaId);
                 areaInfo.Cities = Request.QueryString["selectedCities"];
-                Main.AreaDao.Update(areaInfo);
+                AreaDao.Update(areaInfo);
                 Response.Redirect($@"{GetRedirectUrl(_siteId, _deliveryId)}");
                 return;
             }
 
             if (IsPostBack) return;
 
-            var deliveryInfo = Main.DeliveryDao.GetDeliveryInfo(_deliveryId);
+            var deliveryInfo = DeliveryDao.GetDeliveryInfo(_deliveryId);
 
             TbDeliveryName.Text = deliveryInfo.DeliveryName;
             Utils.SelectListItems(DdlDeliveryType, deliveryInfo.DeliveryType);
@@ -90,7 +91,7 @@ namespace SS.Shopping.Pages
             TbAddStandards.Text = deliveryInfo.AddStandards.ToString();
             TbAddFees.Text = deliveryInfo.AddFees.ToString("N2");
 
-            RptAreas.DataSource = Main.AreaDao.GetAreaInfoList(_deliveryId);
+            RptAreas.DataSource = AreaDao.GetAreaInfoList(_deliveryId);
             RptAreas.ItemDataBound += RptAreas_ItemDataBound;
             RptAreas.DataBind();
 
@@ -105,7 +106,7 @@ namespace SS.Shopping.Pages
 
         public string GetSelectedCities()
         {
-            var areaInfo = Main.AreaDao.GetAreaInfo(_areaId);
+            var areaInfo = AreaDao.GetAreaInfo(_areaId);
             if (string.IsNullOrEmpty(areaInfo.Cities))
             {
                 return "[]";
@@ -161,7 +162,7 @@ namespace SS.Shopping.Pages
 
         private bool SaveDelivery()
         {
-            var deliveryInfo = Main.DeliveryDao.GetDeliveryInfo(_deliveryId);
+            var deliveryInfo = DeliveryDao.GetDeliveryInfo(_deliveryId);
 
             deliveryInfo.DeliveryName = TbDeliveryName.Text;
             deliveryInfo.DeliveryType = DdlDeliveryType.SelectedValue;
@@ -182,7 +183,7 @@ namespace SS.Shopping.Pages
                 var tbAddFees = (TextBox) repeaterItem.FindControl("tbAddFees");
 
                 var areaId = Utils.ParseInt(hfAreaId.Value);
-                var areaInfo = Main.AreaDao.GetAreaInfo(areaId);
+                var areaInfo = AreaDao.GetAreaInfo(areaId);
 
                 areaInfo.StartStandards = Utils.ParseInt(tbStartStandards.Text);
                 areaInfo.StartFees = Utils.ParseDecimal(tbStartFees.Text);
@@ -191,10 +192,10 @@ namespace SS.Shopping.Pages
 
                 if (string.IsNullOrEmpty(areaInfo.Cities)) return false;
 
-                Main.AreaDao.Update(areaInfo);
+                AreaDao.Update(areaInfo);
             }
 
-            Main.DeliveryDao.Update(deliveryInfo);
+            DeliveryDao.Update(deliveryInfo);
 
             return true;
         }

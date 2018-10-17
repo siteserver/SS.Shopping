@@ -1,5 +1,6 @@
 ﻿using SiteServer.Plugin;
 using SS.Shopping.Core;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Parse
 {
@@ -15,7 +16,7 @@ namespace SS.Shopping.Parse
             var siteId = context.GetPostInt("siteId");
             var sessionId = context.GetPostString("sessionId");
 
-            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var cartInfoList = CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
 
             var productName = string.Empty;
             decimal productFee = 0;

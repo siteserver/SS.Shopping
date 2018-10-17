@@ -6,18 +6,9 @@ using SS.Shopping.Model;
 
 namespace SS.Shopping.Provider
 {
-    public class CartDao
+    public static class CartDao
     {
         public const string TableName = "ss_shopping_cart";
-
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public CartDao(string connectionString, IDatabaseApi dataApi)
-        {
-            _connectionString = connectionString;
-            _helper = dataApi;
-        }
 
         public static List<TableColumn> Columns => new List<TableColumn>
         {
@@ -94,7 +85,7 @@ namespace SS.Shopping.Provider
             }
         };
 
-        public int Insert(CartInfo cartInfo)
+        public static int Insert(CartInfo cartInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
            ({nameof(CartInfo.SiteId)}, 
@@ -125,24 +116,24 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(cartInfo.SiteId), cartInfo.SiteId),
-                _helper.GetParameter(nameof(cartInfo.OrderId), 0),
-                _helper.GetParameter(nameof(cartInfo.UserName), cartInfo.UserName),
-                _helper.GetParameter(nameof(cartInfo.SessionId), cartInfo.SessionId),
-                _helper.GetParameter(nameof(cartInfo.ProductId), cartInfo.ProductId),
-                _helper.GetParameter(nameof(cartInfo.ProductName), cartInfo.ProductName),
-                _helper.GetParameter(nameof(cartInfo.ImageUrl), cartInfo.ImageUrl),
-                _helper.GetParameter(nameof(cartInfo.LinkUrl), cartInfo.LinkUrl),
-                _helper.GetParameter(nameof(cartInfo.Fee), cartInfo.Fee),
-                _helper.GetParameter(nameof(cartInfo.IsDelivery), cartInfo.IsDelivery),
-                _helper.GetParameter(nameof(cartInfo.Count), cartInfo.Count),
-                _helper.GetParameter(nameof(cartInfo.AddDate), cartInfo.AddDate)
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.SiteId), cartInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.OrderId), 0),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.UserName), cartInfo.UserName),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.SessionId), cartInfo.SessionId),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.ProductId), cartInfo.ProductId),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.ProductName), cartInfo.ProductName),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.ImageUrl), cartInfo.ImageUrl),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.LinkUrl), cartInfo.LinkUrl),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.Fee), cartInfo.Fee),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.IsDelivery), cartInfo.IsDelivery),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.Count), cartInfo.Count),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.AddDate), cartInfo.AddDate)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(CartInfo.Id), _connectionString, sqlString, parameters.ToArray());
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(CartInfo.Id), Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Update(CartInfo cartInfo)
+        public static void Update(CartInfo cartInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)}, 
@@ -160,24 +151,24 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(cartInfo.SiteId), cartInfo.SiteId),
-                _helper.GetParameter(nameof(cartInfo.UserName), cartInfo.UserName),
-                _helper.GetParameter(nameof(cartInfo.SessionId), cartInfo.SessionId),
-                _helper.GetParameter(nameof(cartInfo.ProductId), cartInfo.ProductId),
-                _helper.GetParameter(nameof(cartInfo.ProductName), cartInfo.ProductName),
-                _helper.GetParameter(nameof(cartInfo.ImageUrl), cartInfo.ImageUrl),
-                _helper.GetParameter(nameof(cartInfo.LinkUrl), cartInfo.LinkUrl),
-                _helper.GetParameter(nameof(cartInfo.Fee), cartInfo.Fee),
-                _helper.GetParameter(nameof(cartInfo.IsDelivery), cartInfo.IsDelivery),
-                _helper.GetParameter(nameof(cartInfo.Count), cartInfo.Count),
-                _helper.GetParameter(nameof(cartInfo.AddDate), cartInfo.AddDate),
-                _helper.GetParameter(nameof(cartInfo.Id), cartInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.SiteId), cartInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.UserName), cartInfo.UserName),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.SessionId), cartInfo.SessionId),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.ProductId), cartInfo.ProductId),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.ProductName), cartInfo.ProductName),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.ImageUrl), cartInfo.ImageUrl),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.LinkUrl), cartInfo.LinkUrl),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.Fee), cartInfo.Fee),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.IsDelivery), cartInfo.IsDelivery),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.Count), cartInfo.Count),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.AddDate), cartInfo.AddDate),
+                Context.DatabaseApi.GetParameter(nameof(cartInfo.Id), cartInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void UpdateUserName(int siteId, string sessionId, string userName)
+        public static void UpdateUserName(int siteId, string sessionId, string userName)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)} WHERE
@@ -188,15 +179,15 @@ namespace SS.Shopping.Provider
             var parameters = new List<IDataParameter>
             {
                 
-                _helper.GetParameter(nameof(CartInfo.UserName), userName),
-                _helper.GetParameter(nameof(CartInfo.SiteId), siteId),
-                _helper.GetParameter(nameof(CartInfo.SessionId), sessionId)
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.UserName), userName),
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.SiteId), siteId),
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.SessionId), sessionId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void UpdateOrderId(List<int> cartIdList, int orderId)
+        public static void UpdateOrderId(List<int> cartIdList, int orderId)
         {
             if (cartIdList == null || cartIdList.Count == 0) return;
 
@@ -206,42 +197,42 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(CartInfo.OrderId), orderId)
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.OrderId), orderId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Delete(int siteId, string userName, string sessionId)
+        public static void Delete(int siteId, string userName, string sessionId)
         {
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return;
 
             string sqlString = $"DELETE FROM {TableName} WHERE {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)} AND {nameof(CartInfo.OrderId)} = 0";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(CartInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.SiteId), siteId)
             };
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" AND ({nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)} OR {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)})";
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.UserName), userName));
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.SessionId), sessionId));
             }
             else if (!string.IsNullOrEmpty(userName))
             {
                 sqlString += $" AND {nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)}";
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.UserName), userName));
             }
             else if (!string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" AND {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.SessionId), sessionId));
             }
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public int GetCartId(int siteId, string sessionId, string productId)
+        public static int GetCartId(int siteId, string sessionId, string productId)
         {
             string sqlString = $@"SELECT {nameof(CartInfo.Id)} FROM {TableName} WHERE 
                 {nameof(CartInfo.SiteId)} = @{nameof(CartInfo.SiteId)} AND
@@ -251,15 +242,15 @@ namespace SS.Shopping.Provider
 
             var parameters = new []
             {
-                _helper.GetParameter(nameof(CartInfo.SiteId), siteId),
-                _helper.GetParameter(nameof(CartInfo.SessionId), sessionId),
-                _helper.GetParameter(nameof(CartInfo.ProductId), productId)
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.SiteId), siteId),
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.SessionId), sessionId),
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.ProductId), productId)
             };
 
-            return Main.Dao.GetIntResult(sqlString, parameters);
+            return Dao.GetIntResult(sqlString, parameters);
         }
 
-        public List<CartInfo> GetCartInfoList(int siteId, string userName, string sessionId)
+        public static List<CartInfo> GetCartInfoList(int siteId, string userName, string sessionId)
         {
             var list = new List<CartInfo>();
             if (string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(sessionId)) return list;
@@ -283,29 +274,29 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(CartInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.SiteId), siteId)
             };
 
             if (!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" AND ({nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)} OR {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)})";
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.UserName), userName));
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.SessionId), sessionId));
             }
             else if (!string.IsNullOrEmpty(userName))
             {
                 sqlString += $" AND {nameof(CartInfo.UserName)} = @{nameof(CartInfo.UserName)}";
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.UserName), userName));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.UserName), userName));
             }
             else if (!string.IsNullOrEmpty(sessionId))
             {
                 sqlString += $" AND {nameof(CartInfo.SessionId)} = @{nameof(CartInfo.SessionId)}";
-                parameters.Add(_helper.GetParameter(nameof(CartInfo.SessionId), sessionId));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(CartInfo.SessionId), sessionId));
             }
 
             sqlString += $" ORDER BY {nameof(CartInfo.Id)} DESC";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -317,7 +308,7 @@ namespace SS.Shopping.Provider
             return list;
         }
 
-        public List<CartInfo> GetCartInfoList(int orderId)
+        public static List<CartInfo> GetCartInfoList(int orderId)
         {
             var list = new List<CartInfo>();
 
@@ -339,12 +330,12 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(CartInfo.OrderId), orderId)
+                Context.DatabaseApi.GetParameter(nameof(CartInfo.OrderId), orderId)
             };
 
             sqlString += $" ORDER BY {nameof(CartInfo.Id)} DESC";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -356,7 +347,7 @@ namespace SS.Shopping.Provider
             return list;
         }
 
-        public CartInfo GetCartInfo(int cartId)
+        public static CartInfo GetCartInfo(int cartId)
         {
             CartInfo cartInfo = null;
 
@@ -375,7 +366,7 @@ namespace SS.Shopping.Provider
             {nameof(CartInfo.AddDate)}
             FROM {TableName} WHERE {nameof(CartInfo.Id)} = {cartId}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -422,6 +413,5 @@ namespace SS.Shopping.Provider
 
             return cartInfo;
         }
-
     }
 }

@@ -6,18 +6,9 @@ using SS.Shopping.Model;
 
 namespace SS.Shopping.Provider
 {
-    public class OrderDao
+    public static class OrderDao
     {
         public const string TableName = "ss_shopping_order";
-
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public OrderDao(string connectionString, IDatabaseApi dataApi)
-        {
-            _connectionString = connectionString;
-            _helper = dataApi;
-        }
 
         public static List<TableColumn> Columns => new List<TableColumn>
         {
@@ -130,7 +121,7 @@ namespace SS.Shopping.Provider
             }
         };
 
-        public int Insert(OrderInfo orderInfo)
+        public static int Insert(OrderInfo orderInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
            ({nameof(OrderInfo.SiteId)}, 
@@ -173,30 +164,30 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(orderInfo.SiteId), orderInfo.SiteId),
-                _helper.GetParameter(nameof(orderInfo.Guid), orderInfo.Guid),
-                _helper.GetParameter(nameof(orderInfo.UserName), orderInfo.UserName),
-                _helper.GetParameter(nameof(orderInfo.SessionId), orderInfo.SessionId),
-                _helper.GetParameter(nameof(orderInfo.RealName), orderInfo.RealName),
-                _helper.GetParameter(nameof(orderInfo.Mobile), orderInfo.Mobile),
-                _helper.GetParameter(nameof(orderInfo.Tel), orderInfo.Tel),
-                _helper.GetParameter(nameof(orderInfo.Location), orderInfo.Location),
-                _helper.GetParameter(nameof(orderInfo.Address), orderInfo.Address),
-                _helper.GetParameter(nameof(orderInfo.ZipCode), orderInfo.ZipCode),
-                _helper.GetParameter(nameof(orderInfo.Message), orderInfo.Message),
-                _helper.GetParameter(nameof(orderInfo.Channel), orderInfo.Channel),
-                _helper.GetParameter(nameof(orderInfo.TotalFee), orderInfo.TotalFee),
-                _helper.GetParameter(nameof(orderInfo.ExpressCost), orderInfo.ExpressCost),
-                _helper.GetParameter(nameof(orderInfo.TotalCount), orderInfo.TotalCount),
-                _helper.GetParameter(nameof(orderInfo.IsPaied), orderInfo.IsPaied),
-                _helper.GetParameter(nameof(orderInfo.State), orderInfo.State),
-                _helper.GetParameter(nameof(orderInfo.AddDate), orderInfo.AddDate)
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.SiteId), orderInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Guid), orderInfo.Guid),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.UserName), orderInfo.UserName),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.SessionId), orderInfo.SessionId),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.RealName), orderInfo.RealName),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Mobile), orderInfo.Mobile),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Tel), orderInfo.Tel),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Location), orderInfo.Location),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Address), orderInfo.Address),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.ZipCode), orderInfo.ZipCode),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Message), orderInfo.Message),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.Channel), orderInfo.Channel),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.TotalFee), orderInfo.TotalFee),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.ExpressCost), orderInfo.ExpressCost),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.TotalCount), orderInfo.TotalCount),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.IsPaied), orderInfo.IsPaied),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.State), orderInfo.State),
+                Context.DatabaseApi.GetParameter(nameof(orderInfo.AddDate), orderInfo.AddDate)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(OrderInfo.Id), _connectionString, sqlString, parameters.ToArray());
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(OrderInfo.Id), Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        //public void Update(OrderInfo orderInfo)
+        //public static void Update(OrderInfo orderInfo)
         //{
         //    string sqlString = $@"UPDATE {TableName} SET
         //        {nameof(OrderInfo.SiteId)} = @{nameof(OrderInfo.SiteId)}, 
@@ -219,29 +210,29 @@ namespace SS.Shopping.Provider
 
         //    var parameters = new List<IDataParameter>
         //    {
-        //        _helper.GetParameter(nameof(orderInfo.SiteId), orderInfo.SiteId),
-        //        _helper.GetParameter(nameof(orderInfo.UserName), orderInfo.UserName),
-        //        _helper.GetParameter(nameof(orderInfo.SessionId), orderInfo.SessionId),
-        //        _helper.GetParameter(nameof(orderInfo.RealName), orderInfo.RealName),
-        //        _helper.GetParameter(nameof(orderInfo.Mobile), orderInfo.Mobile),
-        //        _helper.GetParameter(nameof(orderInfo.Tel), orderInfo.Tel),
-        //        _helper.GetParameter(nameof(orderInfo.Location), orderInfo.Location),
-        //        _helper.GetParameter(nameof(orderInfo.Address), orderInfo.Address),
-        //        _helper.GetParameter(nameof(orderInfo.Message), orderInfo.Message),
-        //        _helper.GetParameter(nameof(orderInfo.Channel), orderInfo.Channel),
-        //        _helper.GetParameter(nameof(orderInfo.TotalFee), orderInfo.TotalFee),
-        //        _helper.GetParameter(nameof(orderInfo.ExpressCost), orderInfo.ExpressCost),
-        //        _helper.GetParameter(nameof(orderInfo.TotalCount), orderInfo.TotalCount),
-        //        _helper.GetParameter(nameof(orderInfo.IsPaied), orderInfo.IsPaied),
-        //        _helper.GetParameter(nameof(orderInfo.State), orderInfo.State),
-        //        _helper.GetParameter(nameof(orderInfo.AddDate), orderInfo.AddDate),
-        //        _helper.GetParameter(nameof(orderInfo.Id), orderInfo.Id)
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.SiteId), orderInfo.SiteId),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.UserName), orderInfo.UserName),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.SessionId), orderInfo.SessionId),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.RealName), orderInfo.RealName),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Mobile), orderInfo.Mobile),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Tel), orderInfo.Tel),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Location), orderInfo.Location),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Address), orderInfo.Address),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Message), orderInfo.Message),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Channel), orderInfo.Channel),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.TotalFee), orderInfo.TotalFee),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.ExpressCost), orderInfo.ExpressCost),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.TotalCount), orderInfo.TotalCount),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.IsPaied), orderInfo.IsPaied),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.State), orderInfo.State),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.AddDate), orderInfo.AddDate),
+        //        Context.DatabaseApi.GetParameter(nameof(orderInfo.Id), orderInfo.Id)
         //    };
 
-        //    _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+        //    Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         //}
 
-        //public void UpdateIsPaied(int orderId)
+        //public static void UpdateIsPaied(int orderId)
         //{
         //    string sqlString = $@"UPDATE {TableName} SET
         //        {nameof(OrderInfo.IsPaied)} = @{nameof(OrderInfo.IsPaied)} WHERE
@@ -249,14 +240,14 @@ namespace SS.Shopping.Provider
 
         //    var parameters = new List<IDataParameter>
         //    {
-        //        _helper.GetParameter(nameof(OrderInfo.IsPaied), true),
-        //        _helper.GetParameter(nameof(OrderInfo.Id), orderId)
+        //        Context.DatabaseApi.GetParameter(nameof(OrderInfo.IsPaied), true),
+        //        Context.DatabaseApi.GetParameter(nameof(OrderInfo.Id), orderId)
         //    };
 
-        //    _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+        //    Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         //}
 
-        public void UpdateIsPaied(string guid)
+        public static void UpdateIsPaied(string guid)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(OrderInfo.IsPaied)} = @{nameof(OrderInfo.IsPaied)} WHERE
@@ -264,14 +255,14 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.IsPaied), true),
-                _helper.GetParameter(nameof(OrderInfo.Guid), guid)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.IsPaied), true),
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.Guid), guid)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public bool IsPaied(string guid)
+        public static bool IsPaied(string guid)
         {
             var isPaied = false;
 
@@ -279,10 +270,10 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.Guid), guid)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.Guid), guid)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -294,7 +285,7 @@ namespace SS.Shopping.Provider
             return isPaied;
         }
 
-        public void UpdateIsPaiedAndState(int orderId, bool isPaied, string state)
+        public static void UpdateIsPaiedAndState(int orderId, bool isPaied, string state)
         {
             string sqlString = $@"UPDATE {TableName} SET
                     {nameof(OrderInfo.IsPaied)} = @{nameof(OrderInfo.IsPaied)},
@@ -303,35 +294,35 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.IsPaied), isPaied),
-                _helper.GetParameter(nameof(OrderInfo.State), state),
-                _helper.GetParameter(nameof(OrderInfo.Id), orderId)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.IsPaied), isPaied),
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.State), state),
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.Id), orderId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Delete(int orderId)
+        public static void Delete(int orderId)
         {
             string sqlString = $"DELETE FROM {TableName} WHERE {nameof(OrderInfo.Id)} = @{nameof(OrderInfo.Id)}";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.Id), orderId)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.Id), orderId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Delete(List<int> deleteIdList)
+        public static void Delete(List<int> deleteIdList)
         {
             if (deleteIdList == null || deleteIdList.Count == 0) return;
 
             string sqlString =
                 $"DELETE FROM {TableName} WHERE {nameof(OrderInfo.Id)} IN ({string.Join(",", deleteIdList)})";
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        //public string GetSelectStringByState(int siteId, string state)
+        //public static string GetSelectStringByState(int siteId, string state)
         //{
         //    var sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
         //    {nameof(OrderInfo.SiteId)}, 
@@ -362,19 +353,19 @@ namespace SS.Shopping.Provider
         //    return sqlString;
         //}
 
-        public int GetOrderCount(int siteId)
+        public static int GetOrderCount(int siteId)
         {
             string sqlString = $@"SELECT COUNT(*) FROM {TableName} WHERE {nameof(OrderInfo.SiteId)} = @{nameof(OrderInfo.SiteId)}";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(OrderInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.SiteId), siteId)
             };
 
-            return Main.Dao.GetIntResult(sqlString, parameters);
+            return Dao.GetIntResult(sqlString, parameters);
         }
 
-        public int GetOrderCount(int siteId, bool isPaied, string state)
+        public static int GetOrderCount(int siteId, bool isPaied, string state)
         {
             string sqlString;
 
@@ -393,19 +384,19 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.SiteId), siteId)
             };
 
             if (!string.IsNullOrEmpty(state))
             {
                 sqlString += $" AND {nameof(OrderInfo.State)} = @{nameof(OrderInfo.State)}";
-                parameters.Add(_helper.GetParameter(nameof(OrderInfo.State), state));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(OrderInfo.State), state));
             }
 
-            return Main.Dao.GetIntResult(sqlString, parameters.ToArray());
+            return Dao.GetIntResult(sqlString, parameters.ToArray());
         }
 
-        public string GetSelectStringBySearch(int siteId, bool isPaied, string state, string keyword)
+        public static string GetSelectStringBySearch(int siteId, bool isPaied, string state, string keyword)
         {
             var sqlString = $@"SELECT {nameof(OrderInfo.Id)}, 
             {nameof(OrderInfo.SiteId)}, 
@@ -452,7 +443,7 @@ namespace SS.Shopping.Provider
             return sqlString;
         }
 
-        public OrderInfo GetOrderInfo(int orderId)
+        public static OrderInfo GetOrderInfo(int orderId)
         {
             OrderInfo orderInfo = null;
 
@@ -477,7 +468,7 @@ namespace SS.Shopping.Provider
             {nameof(OrderInfo.AddDate)}
             FROM {TableName} WHERE {nameof(OrderInfo.Id)} = {orderId}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -489,7 +480,7 @@ namespace SS.Shopping.Provider
             return orderInfo;
         }
 
-        public OrderInfo GetOrderInfo(string guid)
+        public static OrderInfo GetOrderInfo(string guid)
         {
             OrderInfo orderInfo = null;
 
@@ -516,10 +507,10 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.Guid), guid)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.Guid), guid)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 if (rdr.Read())
                 {
@@ -531,7 +522,7 @@ namespace SS.Shopping.Provider
             return orderInfo;
         }
 
-        public List<OrderInfo> GetOrderInfoList(string userName, bool isPaied)
+        public static List<OrderInfo> GetOrderInfoList(string userName, bool isPaied)
         {
             var list = new List<OrderInfo>();
 
@@ -593,11 +584,11 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.UserName), userName),
-                _helper.GetParameter(nameof(OrderInfo.IsPaied), isPaied)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.UserName), userName),
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.IsPaied), isPaied)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -609,7 +600,7 @@ namespace SS.Shopping.Provider
             return list;
         }
 
-        public List<OrderInfo> GetOrderInfoList(string userName, string state)
+        public static List<OrderInfo> GetOrderInfoList(string userName, string state)
         {
             var list = new List<OrderInfo>();
 
@@ -636,18 +627,18 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(OrderInfo.UserName), userName)
+                Context.DatabaseApi.GetParameter(nameof(OrderInfo.UserName), userName)
             };
 
             if (!string.IsNullOrEmpty(state))
             {
                 sqlString += $" AND {nameof(OrderInfo.State)} = @{nameof(OrderInfo.State)}";
-                parameters.Add(_helper.GetParameter(nameof(OrderInfo.State), state));
+                parameters.Add(Context.DatabaseApi.GetParameter(nameof(OrderInfo.State), state));
             }
 
             sqlString += $" ORDER BY {nameof(OrderInfo.Id)} DESC";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters.ToArray()))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters.ToArray()))
             {
                 while (rdr.Read())
                 {
@@ -706,6 +697,5 @@ namespace SS.Shopping.Provider
 
             return orderInfo;
         }
-
     }
 }

@@ -2,6 +2,7 @@
 using System.Text;
 using SiteServer.Plugin;
 using SS.Payment.Core;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Parse
 {
@@ -15,10 +16,10 @@ namespace SS.Shopping.Parse
         public static object ApiOrderGet(IRequest context)
         {
             var guid = context.GetPostString("guid");
-            var orderInfo = Main.OrderDao.GetOrderInfo(guid);
+            var orderInfo = OrderDao.GetOrderInfo(guid);
             if (orderInfo != null)
             {
-                orderInfo.CartInfoList = Main.CartDao.GetCartInfoList(orderInfo.Id);
+                orderInfo.CartInfoList = CartDao.GetCartInfoList(orderInfo.Id);
             }
 
             return new

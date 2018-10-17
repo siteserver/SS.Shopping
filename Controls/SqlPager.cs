@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SiteServer.Plugin;
 using SS.Shopping.Core;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Controls
 {
@@ -718,7 +719,7 @@ ORDER BY {SortField} {SortMode}";
         {
             var cmdText = GetQueryCountCommandText();
 
-            return Main.Dao.GetIntResult(cmdText);
+            return Dao.GetIntResult(cmdText);
         }
 
         /// <summary>

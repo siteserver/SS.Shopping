@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SiteServer.Plugin;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Core
 {
@@ -196,7 +197,7 @@ namespace SS.Shopping.Core
 
             if (addressInfo != null)
             {
-                var areaInfoList = Main.AreaDao.GetAreaInfoList(deliveryInfo.Id);
+                var areaInfoList = AreaDao.GetAreaInfoList(deliveryInfo.Id);
                 foreach (var areaInfo in areaInfoList)
                 {
                     var cities = areaInfo.Cities.Split(',').ToList();

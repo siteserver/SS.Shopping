@@ -1,6 +1,7 @@
 ﻿using System;
 using SiteServer.Plugin;
 using SS.Shopping.Core;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Parse
 {
@@ -13,8 +14,8 @@ namespace SS.Shopping.Parse
         public static object ApiPaySuccessGet(IRequest context)
         {
             var guid = context.GetPostString("guid");
-            Main.OrderDao.UpdateIsPaied(guid);
-            return Main.OrderDao.GetOrderInfo(guid);
+            OrderDao.UpdateIsPaied(guid);
+            return OrderDao.GetOrderInfo(guid);
         }
 
         public static string Parse(IParseContext context)

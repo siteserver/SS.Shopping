@@ -14,23 +14,6 @@ namespace SS.Shopping
         public static string PluginId { get; private set; }
         public static IRequest Request => Context.Request;
 
-        public static Dao Dao { get; }
-        public static AddressDao AddressDao { get; }
-        public static AreaDao AreaDao { get; }
-        public static CartDao CartDao { get; }
-        public static DeliveryDao DeliveryDao { get; }
-        public static OrderDao OrderDao { get; }
-
-        static Main()
-        {
-            Dao = new Dao(Context.ConnectionString, Context.DatabaseApi);
-            AddressDao = new AddressDao(Context.ConnectionString, Context.DatabaseApi);
-            AreaDao = new AreaDao(Context.ConnectionString, Context.DatabaseApi);
-            CartDao = new CartDao(Context.ConnectionString, Context.DatabaseApi);
-            DeliveryDao = new DeliveryDao(Context.DatabaseType, Context.ConnectionString, Context.DatabaseApi);
-            OrderDao = new OrderDao(Context.ConnectionString, Context.DatabaseApi);
-        }
-
         private static readonly Dictionary<int, ConfigInfo> ConfigInfoDict = new Dictionary<int, ConfigInfo>();
 
         public static ConfigInfo GetConfigInfo(int siteId)

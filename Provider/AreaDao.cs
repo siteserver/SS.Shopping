@@ -5,18 +5,9 @@ using SS.Shopping.Model;
 
 namespace SS.Shopping.Provider
 {
-    public class AreaDao
+    public static class AreaDao
     {
         public const string TableName = "ss_shopping_area";
-
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public AreaDao(string connectionString, IDatabaseApi dataApi)
-        {
-            _connectionString = connectionString;
-            _helper = dataApi;
-        }
 
         public static List<TableColumn> Columns => new List<TableColumn>
         {
@@ -58,7 +49,7 @@ namespace SS.Shopping.Provider
             }
         };
 
-        public int Insert(AreaInfo areaInfo)
+        public static int Insert(AreaInfo areaInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
            ({nameof(AreaInfo.DeliveryId)}, 
@@ -77,18 +68,18 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(areaInfo.DeliveryId), areaInfo.DeliveryId),
-                _helper.GetParameter(nameof(areaInfo.Cities), areaInfo.Cities),
-                _helper.GetParameter(nameof(areaInfo.StartStandards), areaInfo.StartStandards),
-                _helper.GetParameter(nameof(areaInfo.StartFees), areaInfo.StartFees),
-                _helper.GetParameter(nameof(areaInfo.AddStandards), areaInfo.AddStandards),
-                _helper.GetParameter(nameof(areaInfo.AddFees), areaInfo.AddFees)
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.DeliveryId), areaInfo.DeliveryId),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.Cities), areaInfo.Cities),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.StartStandards), areaInfo.StartStandards),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.StartFees), areaInfo.StartFees),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.AddStandards), areaInfo.AddStandards),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.AddFees), areaInfo.AddFees)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(AreaInfo.Id), _connectionString, sqlString, parameters.ToArray());
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(AreaInfo.Id), Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Update(AreaInfo areaInfo)
+        public static void Update(AreaInfo areaInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(AreaInfo.DeliveryId)} = @{nameof(AreaInfo.DeliveryId)}, 
@@ -101,30 +92,30 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(areaInfo.DeliveryId), areaInfo.DeliveryId),
-                _helper.GetParameter(nameof(areaInfo.Cities), areaInfo.Cities),
-                _helper.GetParameter(nameof(areaInfo.StartStandards), areaInfo.StartStandards),
-                _helper.GetParameter(nameof(areaInfo.StartFees), areaInfo.StartFees),
-                _helper.GetParameter(nameof(areaInfo.AddStandards), areaInfo.AddStandards),
-                _helper.GetParameter(nameof(areaInfo.AddFees), areaInfo.AddFees),
-                _helper.GetParameter(nameof(areaInfo.Id), areaInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.DeliveryId), areaInfo.DeliveryId),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.Cities), areaInfo.Cities),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.StartStandards), areaInfo.StartStandards),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.StartFees), areaInfo.StartFees),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.AddStandards), areaInfo.AddStandards),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.AddFees), areaInfo.AddFees),
+                Context.DatabaseApi.GetParameter(nameof(areaInfo.Id), areaInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Delete(int areaId)
+        public static void Delete(int areaId)
         {
             string sqlString = $"DELETE FROM {TableName} WHERE {nameof(AreaInfo.Id)} = @{nameof(AreaInfo.Id)}";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(AreaInfo.Id), areaId)
+                Context.DatabaseApi.GetParameter(nameof(AreaInfo.Id), areaId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public List<AreaInfo> GetAreaInfoList(int deliveryId)
+        public static List<AreaInfo> GetAreaInfoList(int deliveryId)
         {
             var list = new List<AreaInfo>();
 
@@ -137,7 +128,7 @@ namespace SS.Shopping.Provider
                 {nameof(AreaInfo.AddFees)}
                 FROM {TableName} WHERE {nameof(AreaInfo.DeliveryId)} = {deliveryId} ORDER BY {nameof(AreaInfo.Id)}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
@@ -149,7 +140,7 @@ namespace SS.Shopping.Provider
             return list;
         }
 
-        public AreaInfo GetAreaInfo(int areaId)
+        public static AreaInfo GetAreaInfo(int areaId)
         {
             AreaInfo areaInfo = null;
 
@@ -162,7 +153,7 @@ namespace SS.Shopping.Provider
             {nameof(AreaInfo.AddFees)}
             FROM {TableName} WHERE {nameof(AreaInfo.Id)} = {areaId}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -197,6 +188,5 @@ namespace SS.Shopping.Provider
 
             return areaInfo;
         }
-
     }
 }

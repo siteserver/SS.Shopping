@@ -4,6 +4,7 @@ using System.Web;
 using SiteServer.Plugin;
 using SS.Shopping.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Parse
 {
@@ -19,7 +20,7 @@ namespace SS.Shopping.Parse
             var siteId = context.GetPostInt("siteId");
             var sessionId = context.GetPostString("sessionId");
 
-            var cartInfoList = Main.CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
+            var cartInfoList = CartDao.GetCartInfoList(siteId, context.UserName, sessionId);
 
             var totalCount = 0;
             decimal totalFee = 0;
@@ -47,11 +48,11 @@ namespace SS.Shopping.Parse
             var siteId = context.GetPostInt("siteId");
             var sessionId = context.GetPostString("sessionId");
             var cartInfoList = context.GetPostObject<List<CartInfo>>("cartInfoList");
-            Main.CartDao.Delete(siteId, context.UserName, sessionId);
+            CartDao.Delete(siteId, context.UserName, sessionId);
             foreach (var cartInfo in cartInfoList)
             {
                 cartInfo.UserName = context.UserName;
-                cartInfo.Id = Main.CartDao.Insert(cartInfo);
+                cartInfo.Id = CartDao.Insert(cartInfo);
             }
 
             return cartInfoList;

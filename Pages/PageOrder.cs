@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using SS.Shopping.Controls;
 using SS.Shopping.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Pages
 {
@@ -71,13 +72,13 @@ namespace SS.Shopping.Pages
 	        {
 	            var array = Request.QueryString["idCollection"].Split(',');
 	            var list = array.Select(s => Utils.ParseInt(s)).ToList();
-	            Main.OrderDao.Delete(list);
+	            OrderDao.Delete(list);
 	            LtlMessage.Text = Utils.GetMessageHtml("删除成功！", true);
 	        }
 
 	        SpContents.ControlToPaginate = RptContents;
 	        SpContents.ItemsPerPage = 30;
-            SpContents.SelectCommand = Main.OrderDao.GetSelectStringBySearch(_siteId, _isPaied, _state, _keyword);
+            SpContents.SelectCommand = OrderDao.GetSelectStringBySearch(_siteId, _isPaied, _state, _keyword);
             SpContents.SortField = nameof(OrderInfo.Id);
 	        SpContents.SortMode = "DESC";
 	        RptContents.ItemDataBound += RptContents_ItemDataBound;
@@ -125,7 +126,7 @@ if (ids.length > 0){{
 
 	            var id = Utils.ParseInt(Request.QueryString["id"]);
 
-	            var orderInfo = Main.OrderDao.GetOrderInfo(id);
+	            var orderInfo = OrderDao.GetOrderInfo(id);
 	            if (!string.IsNullOrEmpty(orderInfo.Message))
 	            {
 	                LtlModalViewMessage.Text = Utils.GetMessageHtml(orderInfo.Message);
@@ -145,7 +146,7 @@ if (ids.length > 0){{
 	            LtlAddDate.Text = orderInfo.AddDate.ToString("yyyy-MM-dd HH:mm:ss");
 	            LtlState.Text = Utils.GetStateText(orderInfo.IsPaied, orderInfo.State);
 
-	            RptCarts.DataSource = Main.CartDao.GetCartInfoList(orderInfo.Id);
+	            RptCarts.DataSource = CartDao.GetCartInfoList(orderInfo.Id);
 	            RptCarts.ItemDataBound += RptCarts_ItemDataBound;
 	            RptCarts.DataBind();
 
@@ -226,7 +227,7 @@ return false;", string.Empty));
 
             foreach (var orderId in list)
             {
-                Main.OrderDao.UpdateIsPaiedAndState(orderId, isPaied, state);
+                OrderDao.UpdateIsPaiedAndState(orderId, isPaied, state);
             }
 
             Response.Redirect(GetRedirectUrl(_siteId, _isPaied, _state, _keyword));

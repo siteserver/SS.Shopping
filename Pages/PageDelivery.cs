@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SS.Shopping.Core;
 using SS.Shopping.Model;
+using SS.Shopping.Provider;
 
 namespace SS.Shopping.Pages
 {
@@ -33,31 +34,31 @@ namespace SS.Shopping.Pages
                 !string.IsNullOrEmpty(Request.QueryString["deliveryId"]))
             {
                 var deliveryId = Utils.ParseInt(Request.QueryString["deliveryId"]);
-                Main.DeliveryDao.Delete(deliveryId);
+                DeliveryDao.Delete(deliveryId);
                 LtlMessage.Text = Utils.GetMessageHtml("删除成功！", true);
             }
             else if (!string.IsNullOrEmpty(Request.QueryString["up"]) &&
                 !string.IsNullOrEmpty(Request.QueryString["deliveryId"]))
             {
                 var deliveryId = Utils.ParseInt(Request.QueryString["deliveryId"]);
-                Main.DeliveryDao.UpdateTaxisToUp(_siteId, deliveryId);
+                DeliveryDao.UpdateTaxisToUp(_siteId, deliveryId);
                 LtlMessage.Text = Utils.GetMessageHtml("排序生成！", true);
             }
             else if (!string.IsNullOrEmpty(Request.QueryString["down"]) &&
                !string.IsNullOrEmpty(Request.QueryString["deliveryId"]))
             {
                 var deliveryId = Utils.ParseInt(Request.QueryString["deliveryId"]);
-                Main.DeliveryDao.UpdateTaxisToDown(_siteId, deliveryId);
+                DeliveryDao.UpdateTaxisToDown(_siteId, deliveryId);
                 LtlMessage.Text = Utils.GetMessageHtml("排序生成！", true);
             }
             else
             {
-                Main.DeliveryDao.DeleteDeliveryNameIsEmpty();
+                DeliveryDao.DeleteDeliveryNameIsEmpty();
             }
 
             if (IsPostBack) return;
 
-            RptContents.DataSource = Main.DeliveryDao.GetDeliveryInfoList(_siteId);
+            RptContents.DataSource = DeliveryDao.GetDeliveryInfoList(_siteId);
             RptContents.ItemDataBound += RptContents_ItemDataBound;
             RptContents.DataBind();
         }
@@ -68,7 +69,7 @@ namespace SS.Shopping.Pages
             {
                 SiteId = _siteId
             };
-            deliveryInfo.Id = Main.DeliveryDao.Insert(deliveryInfo);
+            deliveryInfo.Id = DeliveryDao.Insert(deliveryInfo);
             Response.Redirect(PageDeliveryAdd.GetRedirectUrl(_siteId, deliveryInfo.Id));
         }
 
@@ -115,7 +116,7 @@ namespace SS.Shopping.Pages
             ltlAddStandards.Text = deliveryInfo.AddStandards.ToString();
             ltlAddFees.Text = deliveryInfo.AddFees.ToString("N2");
 
-            rptAreas.DataSource = Main.AreaDao.GetAreaInfoList(deliveryInfo.Id);
+            rptAreas.DataSource = AreaDao.GetAreaInfoList(deliveryInfo.Id);
             rptAreas.ItemDataBound += RptAreas_ItemDataBound;
             rptAreas.DataBind();
 

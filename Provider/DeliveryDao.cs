@@ -6,7 +6,7 @@ using SS.Shopping.Model;
 
 namespace SS.Shopping.Provider
 {
-    public class DeliveryDao
+    public static class DeliveryDao
     {
         public const string TableName = "ss_shopping_delivery";
 
@@ -61,18 +61,7 @@ namespace SS.Shopping.Provider
             }
         };
 
-        private readonly DatabaseType _databaseType;
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public DeliveryDao(DatabaseType databaseType, string connectionString, IDatabaseApi dataApi)
-        {
-            _databaseType = databaseType;
-            _connectionString = connectionString;
-            _helper = dataApi;
-        }
-
-        public int Insert(DeliveryInfo deliveryInfo)
+        public static int Insert(DeliveryInfo deliveryInfo)
         {
             string sqlString = $@"INSERT INTO {TableName}
            ({nameof(DeliveryInfo.SiteId)},
@@ -97,20 +86,20 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(deliveryInfo.SiteId), deliveryInfo.SiteId),
-                _helper.GetParameter(nameof(deliveryInfo.DeliveryName), deliveryInfo.DeliveryName),
-                _helper.GetParameter(nameof(deliveryInfo.DeliveryType), deliveryInfo.DeliveryType),
-                _helper.GetParameter(nameof(deliveryInfo.StartStandards), deliveryInfo.StartStandards),
-                _helper.GetParameter(nameof(deliveryInfo.StartFees), deliveryInfo.StartFees),
-                _helper.GetParameter(nameof(deliveryInfo.AddStandards), deliveryInfo.AddStandards),
-                _helper.GetParameter(nameof(deliveryInfo.AddFees), deliveryInfo.AddFees),
-                _helper.GetParameter(nameof(deliveryInfo.Taxis), taxis)
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.SiteId), deliveryInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.DeliveryName), deliveryInfo.DeliveryName),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.DeliveryType), deliveryInfo.DeliveryType),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.StartStandards), deliveryInfo.StartStandards),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.StartFees), deliveryInfo.StartFees),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.AddStandards), deliveryInfo.AddStandards),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.AddFees), deliveryInfo.AddFees),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.Taxis), taxis)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(DeliveryInfo.Id), _connectionString, sqlString, parameters.ToArray());
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(DeliveryInfo.Id), Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Update(DeliveryInfo deliveryInfo)
+        public static void Update(DeliveryInfo deliveryInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(DeliveryInfo.SiteId)} = @{nameof(DeliveryInfo.SiteId)}, 
@@ -124,38 +113,38 @@ namespace SS.Shopping.Provider
 
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(deliveryInfo.SiteId), deliveryInfo.SiteId),
-                _helper.GetParameter(nameof(deliveryInfo.DeliveryName), deliveryInfo.DeliveryName),
-                _helper.GetParameter(nameof(deliveryInfo.DeliveryType), deliveryInfo.DeliveryType),
-                _helper.GetParameter(nameof(deliveryInfo.StartStandards), deliveryInfo.StartStandards),
-                _helper.GetParameter(nameof(deliveryInfo.StartFees), deliveryInfo.StartFees),
-                _helper.GetParameter(nameof(deliveryInfo.AddStandards), deliveryInfo.AddStandards),
-                _helper.GetParameter(nameof(deliveryInfo.AddFees), deliveryInfo.AddFees),
-                _helper.GetParameter(nameof(deliveryInfo.Id), deliveryInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.SiteId), deliveryInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.DeliveryName), deliveryInfo.DeliveryName),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.DeliveryType), deliveryInfo.DeliveryType),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.StartStandards), deliveryInfo.StartStandards),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.StartFees), deliveryInfo.StartFees),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.AddStandards), deliveryInfo.AddStandards),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.AddFees), deliveryInfo.AddFees),
+                Context.DatabaseApi.GetParameter(nameof(deliveryInfo.Id), deliveryInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void Delete(int deliveryId)
+        public static void Delete(int deliveryId)
         {
             string sqlString = $"DELETE FROM {TableName} WHERE {nameof(DeliveryInfo.Id)} = @{nameof(DeliveryInfo.Id)}";
             var parameters = new List<IDataParameter>
             {
-                _helper.GetParameter(nameof(DeliveryInfo.Id), deliveryId)
+                Context.DatabaseApi.GetParameter(nameof(DeliveryInfo.Id), deliveryId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters.ToArray());
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters.ToArray());
         }
 
-        public void DeleteDeliveryNameIsEmpty()
+        public static void DeleteDeliveryNameIsEmpty()
         {
             string sqlString = $"DELETE FROM {TableName} WHERE {nameof(DeliveryInfo.DeliveryName)} IS NULL";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        public List<DeliveryInfo> GetDeliveryInfoList(int siteId)
+        public static List<DeliveryInfo> GetDeliveryInfoList(int siteId)
         {
             var list = new List<DeliveryInfo>();
 
@@ -170,7 +159,7 @@ namespace SS.Shopping.Provider
                 {nameof(DeliveryInfo.Taxis)}
                 FROM {TableName} WHERE {nameof(DeliveryInfo.SiteId)} = {siteId} ORDER BY {nameof(DeliveryInfo.Taxis)} DESC";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
@@ -182,7 +171,7 @@ namespace SS.Shopping.Provider
             return list;
         }
 
-        public DeliveryInfo GetDeliveryInfo(int deliveryId)
+        public static DeliveryInfo GetDeliveryInfo(int deliveryId)
         {
             DeliveryInfo deliveryInfo = null;
 
@@ -197,7 +186,7 @@ namespace SS.Shopping.Provider
             {nameof(DeliveryInfo.Taxis)}
             FROM {TableName} WHERE {nameof(DeliveryInfo.Id)} = {deliveryId}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -209,14 +198,14 @@ namespace SS.Shopping.Provider
             return deliveryInfo;
         }
 
-        public bool UpdateTaxisToUp(int siteId, int deliveryId)
+        public static bool UpdateTaxisToUp(int siteId, int deliveryId)
         {
-            var sqlString = Utils.GetTopSqlString(_databaseType, TableName, "Id, Taxis", $"WHERE ((Taxis > (SELECT Taxis FROM {TableName} WHERE Id = {deliveryId})) AND SiteId ={siteId}) ORDER BY Taxis", 1);
+            var sqlString = Utils.GetTopSqlString(Context.DatabaseType, TableName, "Id, Taxis", $"WHERE ((Taxis > (SELECT Taxis FROM {TableName} WHERE Id = {deliveryId})) AND SiteId ={siteId}) ORDER BY Taxis", 1);
 
             var higherId = 0;
             var higherTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -237,14 +226,14 @@ namespace SS.Shopping.Provider
             return false;
         }
 
-        public bool UpdateTaxisToDown(int siteId, int deliveryId)
+        public static bool UpdateTaxisToDown(int siteId, int deliveryId)
         {
-            var sqlString = Utils.GetTopSqlString(_databaseType, TableName, "Id, Taxis", $"WHERE ((Taxis < (SELECT Taxis FROM {TableName} WHERE (Id = {deliveryId}))) AND SiteId = {siteId}) ORDER BY Taxis DESC", 1);
+            var sqlString = Utils.GetTopSqlString(Context.DatabaseType, TableName, "Id, Taxis", $"WHERE ((Taxis < (SELECT Taxis FROM {TableName} WHERE (Id = {deliveryId}))) AND SiteId = {siteId}) ORDER BY Taxis DESC", 1);
 
             var lowerId = 0;
             var lowerTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -265,23 +254,23 @@ namespace SS.Shopping.Provider
             return false;
         }
 
-        private int GetMaxTaxis(int siteId)
+        private static int GetMaxTaxis(int siteId)
         {
             string sqlString =
                 $"SELECT MAX(Taxis) FROM {TableName} WHERE {nameof(DeliveryInfo.SiteId)} = {siteId}";
-            return Main.Dao.GetIntResult(sqlString);
+            return Dao.GetIntResult(sqlString);
         }
 
-        private int GetTaxis(int deliveryId)
+        private static int GetTaxis(int deliveryId)
         {
             string sqlString = $"SELECT Taxis FROM {TableName} WHERE ({nameof(DeliveryInfo.Id)} = {deliveryId})";
-            return Main.Dao.GetIntResult(sqlString);
+            return Dao.GetIntResult(sqlString);
         }
 
-        private void SetTaxis(int deliveryId, int taxis)
+        private static void SetTaxis(int deliveryId, int taxis)
         {
             string sqlString = $"UPDATE {TableName} SET Taxis = {taxis} WHERE Id = {deliveryId}";
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
         private static DeliveryInfo GetDeliveryInfo(IDataRecord rdr)
@@ -311,6 +300,5 @@ namespace SS.Shopping.Provider
 
             return deliveryInfo;
         }
-
     }
 }
