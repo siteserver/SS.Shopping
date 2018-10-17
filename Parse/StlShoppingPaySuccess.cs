@@ -26,14 +26,14 @@ namespace SS.Shopping.Parse
                 var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributeOrderUrl))
                 {
-                    orderUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    orderUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             string template;
             if (!string.IsNullOrEmpty(context.StlInnerHtml))
             {
-                template = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+                template = Context.ParseApi.Parse(context.StlInnerHtml, context);
             }
             else
             {
@@ -64,14 +64,17 @@ namespace SS.Shopping.Parse
     </div>
 </div>
 ";
-            }           
+            }
+
+            var pluginUrl = Context.PluginApi.GetPluginUrl(Main.PluginId);
+            var apiUrl = Context.PluginApi.GetPluginApiUrl(Main.PluginId);
 
             var elementId = "el-" + Guid.NewGuid();
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
-            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
-            var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
-            var baseCssUrl = Main.Instance.PluginApi.GetPluginUrl("assets/css/base.css");
-            var apiGetUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiPaySuccessGet)}";
+            var jqueryUrl = $"{pluginUrl}/assets/js/jquery.min.js";
+            var vueUrl = $"{pluginUrl}/assets/js/vue.min.js";
+            var baseCssUrl = $"{pluginUrl}/assets/css/base.css";
+            var apiGetUrl = $"{apiUrl}/{nameof(ApiPaySuccessGet)}";
 
             return $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>

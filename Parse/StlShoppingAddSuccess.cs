@@ -53,23 +53,23 @@ namespace SS.Shopping.Parse
 
                 if (Utils.EqualsIgnoreCase(attriName, AttributeCartUrl))
                 {
-                    cartUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    cartUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeContinueUrl))
                 {
-                    continueUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    continueUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
             if (string.IsNullOrEmpty(continueUrl))
             {
-                continueUrl = Main.Instance.SiteApi.GetSiteUrl(context.SiteId);
+                continueUrl = Context.SiteApi.GetSiteUrl(context.SiteId);
             }
 
             string template;
             if (!string.IsNullOrEmpty(context.StlInnerHtml))
             {
-                template = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+                template = Context.ParseApi.Parse(context.StlInnerHtml, context);
             }
             else
             {
@@ -101,9 +101,12 @@ namespace SS.Shopping.Parse
 ";
             }
 
-            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
-            var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
-            var apiUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiAddSuccessGet)}";
+            var pluginUrl = Context.PluginApi.GetPluginUrl(Main.PluginId);
+            var apiUrl = Context.PluginApi.GetPluginApiUrl(Main.PluginId);
+
+            var jqueryUrl = $"{pluginUrl}/assets/js/jquery.min.js";
+            var utilsUrl = $"{pluginUrl}/assets/js/utils.js";
+            var apiAddSuccessGetUrl = $"{apiUrl}/{nameof(ApiAddSuccessGet)}";
 
             return $@"
 {template}
@@ -113,7 +116,7 @@ namespace SS.Shopping.Parse
     $(document).ready(function(){{
         var sessionId = shoppingGetSessionId();
         $.ajax({{
-            url : ""{apiUrl}"",
+            url : ""{apiAddSuccessGetUrl}"",
             xhrFields: {{
                 withCredentials: true
             }},

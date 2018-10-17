@@ -39,11 +39,11 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SiteServer.Plugin, Version=2.0.11.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SiteServer.Plugin.2.0.11\lib\net45\SiteServer.Plugin.dll</HintPath>
+    <Reference Include="SiteServer.Plugin, Version=2.0.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SiteServer.Plugin.2.0.17\lib\net45\SiteServer.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="SS.Payment, Version=1.1.43.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SS.Payment.1.1.43\lib\net452\SS.Payment.dll</HintPath>
+    <Reference Include="SS.Payment, Version=1.1.45.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SS.Payment.1.1.45-beta\lib\net452\SS.Payment.dll</HintPath>
     </Reference>
     <Reference Include="ThoughtWorks.QRCode, Version=1.0.4778.30637, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ThoughtWorks.QRCode.1.1.0\lib\ThoughtWorks.QRCode.dll</HintPath>

@@ -11,41 +11,40 @@ namespace SS.Shopping
 {
     public class Main : PluginBase
     {
-        public static AddressDao AddressDao { get; private set; }
+        public static string PluginId { get; private set; }
+        public static IRequest Request => Context.Request;
 
-        public static AreaDao AreaDao { get; private set; }
+        public static Dao Dao { get; }
+        public static AddressDao AddressDao { get; }
+        public static AreaDao AreaDao { get; }
+        public static CartDao CartDao { get; }
+        public static DeliveryDao DeliveryDao { get; }
+        public static OrderDao OrderDao { get; }
 
-        public static CartDao CartDao { get; private set; }
-
-        public static Dao Dao { get; private set; }
-
-        public static DeliveryDao DeliveryDao { get; private set; }
-
-        public static OrderDao OrderDao { get; private set; }
-
-        private readonly Dictionary<int, ConfigInfo> _configInfoDict = new Dictionary<int, ConfigInfo>();
-
-        public ConfigInfo GetConfigInfo(int siteId)
+        static Main()
         {
-            if (!_configInfoDict.ContainsKey(siteId))
-            {
-                _configInfoDict[siteId] = ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
-            }
-            return _configInfoDict[siteId];
+            Dao = new Dao(Context.ConnectionString, Context.DatabaseApi);
+            AddressDao = new AddressDao(Context.ConnectionString, Context.DatabaseApi);
+            AreaDao = new AreaDao(Context.ConnectionString, Context.DatabaseApi);
+            CartDao = new CartDao(Context.ConnectionString, Context.DatabaseApi);
+            DeliveryDao = new DeliveryDao(Context.DatabaseType, Context.ConnectionString, Context.DatabaseApi);
+            OrderDao = new OrderDao(Context.ConnectionString, Context.DatabaseApi);
         }
 
-        internal static Main Instance { get; private set; }
+        private static readonly Dictionary<int, ConfigInfo> ConfigInfoDict = new Dictionary<int, ConfigInfo>();
+
+        public static ConfigInfo GetConfigInfo(int siteId)
+        {
+            if (!ConfigInfoDict.ContainsKey(siteId))
+            {
+                ConfigInfoDict[siteId] = Context.ConfigApi.GetConfig<ConfigInfo>(PluginId, siteId) ?? new ConfigInfo();
+            }
+            return ConfigInfoDict[siteId];
+        }
 
         public override void Startup(IService service)
         {
-            Instance = this;
-
-            Dao = new Dao(ConnectionString, DatabaseApi);
-            AddressDao = new AddressDao(ConnectionString, DatabaseApi);
-            AreaDao = new AreaDao(ConnectionString, DatabaseApi);
-            CartDao = new CartDao(ConnectionString, DatabaseApi);
-            DeliveryDao = new DeliveryDao(DatabaseType, ConnectionString, DatabaseApi);
-            OrderDao = new OrderDao(ConnectionString, DatabaseApi);
+            PluginId = Id;
 
             service.AddSiteMenu(siteId => new Menu
                 {

@@ -439,12 +439,12 @@ namespace SS.Shopping.Provider
 
             if (!string.IsNullOrEmpty(state))
             {
-                state = Main.Instance.UtilsApi.FilterSql(state);
+                state = Context.UtilsApi.FilterSql(state);
                 sqlString += $" AND {nameof(OrderInfo.State)} = '{state}'";
             }
             if (!string.IsNullOrEmpty(keyword))
             {
-                keyword = Main.Instance.UtilsApi.FilterSql(keyword);
+                keyword = Context.UtilsApi.FilterSql(keyword);
                 sqlString += $" AND ({nameof(OrderInfo.Guid)} LIKE '%{keyword}%' OR {nameof(OrderInfo.RealName)} LIKE '%{keyword}%' OR {nameof(OrderInfo.Mobile)} LIKE '%{keyword}%' OR {nameof(OrderInfo.Location)} LIKE '%{keyword}%' OR {nameof(OrderInfo.Address)} LIKE '%{keyword}%')";
             }
             sqlString += $" ORDER BY {nameof(OrderInfo.Id)} DESC";

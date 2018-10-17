@@ -83,38 +83,38 @@ namespace SS.Shopping.Parse
                 var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ProductId)))
                 {
-                    productId = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    productId = Context.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ProductName)))
                 {
-                    productName = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    productName = Context.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.ImageUrl)))
                 {
-                    imageUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    imageUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.LinkUrl)))
                 {
-                    linkUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    linkUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.Fee)))
                 {
-                    value = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    value = Context.ParseApi.ParseAttributeValue(value, context);
                     decimal.TryParse(value, out fee);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.IsDelivery)))
                 {
-                    value = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    value = Context.ParseApi.ParseAttributeValue(value, context);
                     bool.TryParse(value, out isDelivery);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, nameof(CartInfo.Count)))
                 {
-                    value = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    value = Context.ParseApi.ParseAttributeValue(value, context);
                     int.TryParse(value, out count);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeSuccessUrl))
                 {
-                    successUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    successUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
             }
 
@@ -125,12 +125,15 @@ namespace SS.Shopping.Parse
                 stlAnchor.Attributes.Add(attributeName, context.StlAttributes[attributeName]);
             }
 
-            stlAnchor.InnerHtml = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+            stlAnchor.InnerHtml = Context.ParseApi.Parse(context.StlInnerHtml, context);
             stlAnchor.HRef = "javascript:;";
 
-            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
-            var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
-            var apiUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiAdd)}";
+            var pluginUrl = Context.PluginApi.GetPluginUrl(Main.PluginId);
+            var apiUrl = Context.PluginApi.GetPluginApiUrl(Main.PluginId);
+
+            var jqueryUrl = $"{pluginUrl}/assets/js/jquery.min.js";
+            var utilsUrl = $"{pluginUrl}/assets/js/utils.js";
+            var apiAddUrl = $"{apiUrl}/{nameof(ApiAdd)}";
 
             var script = $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
@@ -139,7 +142,7 @@ namespace SS.Shopping.Parse
     function addToCart_{productId}(){{
         var sessionId = shoppingGetSessionId();
         $.ajax({{
-            url : ""{apiUrl}"",
+            url : ""{apiAddUrl}"",
             xhrFields: {{
                 withCredentials: true
             }},

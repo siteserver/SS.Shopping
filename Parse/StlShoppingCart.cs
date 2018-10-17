@@ -30,7 +30,7 @@ namespace SS.Shopping.Parse
                 totalFee += cartInfo.Fee * cartInfo.Count;
             }
 
-            var configInfo = Main.Instance.ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
+            var configInfo = Context.ConfigApi.GetConfig<ConfigInfo>(Main.PluginId, siteId) ?? new ConfigInfo();
 
             return new
             {
@@ -67,11 +67,11 @@ namespace SS.Shopping.Parse
                 var value = context.StlAttributes[attriName];
                 if (Utils.EqualsIgnoreCase(attriName, AttributePayUrl))
                 {
-                    payUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    payUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
                 else if (Utils.EqualsIgnoreCase(attriName, AttributeLoginUrl))
                 {
-                    loginUrl = Main.Instance.ParseApi.ParseAttributeValue(value, context);
+                    loginUrl = Context.ParseApi.ParseAttributeValue(value, context);
                 }
             }
             if (string.IsNullOrEmpty(loginUrl))
@@ -79,11 +79,11 @@ namespace SS.Shopping.Parse
                 loginUrl = "/home/#/login";
             }
 
-            var currentUrl = Main.Instance.ParseApi.GetCurrentUrl(context);
+            var currentUrl = Context.ParseApi.GetCurrentUrl(context);
             var loginToCartUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(currentUrl)}";
             var loginToPayUrl = $"{loginUrl}?redirectUrl={HttpUtility.UrlEncode(payUrl)}";
 
-            var html = Main.Instance.ParseApi.Parse(context.StlInnerHtml, context);
+            var html = Context.ParseApi.Parse(context.StlInnerHtml, context);
             if (string.IsNullOrEmpty(context.StlInnerHtml))
             {
                 html = $@"
@@ -128,11 +128,14 @@ namespace SS.Shopping.Parse
             var vueId = "v" + Guid.NewGuid().ToString().Replace("-", string.Empty);
             html = $@"<div id=""{elementId}"">{html}</div>";
 
-            var jqueryUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/jquery.min.js");
-            var utilsUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/utils.js");
-            var vueUrl = Main.Instance.PluginApi.GetPluginUrl("assets/js/vue.min.js");
-            var apiGetUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiCartGet)}";
-            var apiSaveUrl = $"{Main.Instance.PluginApi.PluginApiUrl}/{nameof(ApiCartSave)}";
+            var pluginUrl = Context.PluginApi.GetPluginUrl(Main.PluginId);
+            var apiUrl = Context.PluginApi.GetPluginApiUrl(Main.PluginId);
+
+            var jqueryUrl = $"{pluginUrl}/assets/js/jquery.min.js";
+            var utilsUrl = $"{pluginUrl}/assets/js/utils.js";
+            var vueUrl = $"{pluginUrl}/assets/js/vue.min.js";
+            var apiGetUrl = $"{apiUrl}/{nameof(ApiCartGet)}";
+            var apiSaveUrl = $"{apiUrl}/{nameof(ApiCartSave)}";
 
             html += $@"
 <script type=""text/javascript"" src=""{jqueryUrl}""></script>
