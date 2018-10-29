@@ -36,11 +36,12 @@ namespace SS.Shopping.Pages
 
         public void Page_Load(object sender, EventArgs e)
         {
-            _siteId = Utils.ParseInt(Request.QueryString["siteId"]);
-            _deliveryId = Utils.ParseInt(Request.QueryString["deliveryId"]);
-            _areaId = Utils.ParseInt(Request.QueryString["areaId"]);
+            var request = SiteServer.Plugin.Context.GetCurrentRequest();
+            _siteId = request.GetQueryInt("siteId");
+            _deliveryId = request.GetQueryInt("deliveryId");
+            _areaId = request.GetQueryInt("areaId");
 
-            if (!Main.Request.AdminPermissions.HasSitePermissions(_siteId, Main.PluginId))
+            if (!request.AdminPermissions.HasSitePermissions(_siteId, Main.PluginId))
             {
                 Response.Write("<h1>未授权访问</h1>");
                 Response.End();

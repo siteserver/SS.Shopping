@@ -21,9 +21,10 @@ namespace SS.Shopping.Pages
 
         public void Page_Load(object sender, EventArgs e)
         {
-            _siteId = Utils.ParseInt(Request.QueryString["siteId"]);
+            var request = SiteServer.Plugin.Context.GetCurrentRequest();
+            _siteId = request.GetQueryInt("siteId");
 
-            if (!Main.Request.AdminPermissions.HasSitePermissions(_siteId, Main.PluginId))
+            if (!request.AdminPermissions.HasSitePermissions(_siteId, Main.PluginId))
             {
                 Response.Write("<h1>未授权访问</h1>");
                 Response.End();

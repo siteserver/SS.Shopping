@@ -55,12 +55,13 @@ namespace SS.Shopping.Pages
 
 	    public void Page_Load(object sender, EventArgs e)
 	    {
-	        _siteId = Utils.ParseInt(Request.QueryString["siteId"]);
-            _isPaied = Utils.ToBool(Request.QueryString["isPaied"]);
-            _state = Request.QueryString["state"];
-            _keyword = Request.QueryString["keyword"];
+	        var request = SiteServer.Plugin.Context.GetCurrentRequest();
+	        _siteId = request.GetQueryInt("siteId");
+            _isPaied = request.GetQueryBool("isPaied");
+            _state = request.GetQueryString("state");
+            _keyword = request.GetQueryString("keyword");
 
-            if (!Main.Request.AdminPermissions.HasSitePermissions(_siteId, Main.PluginId))
+            if (!request.AdminPermissions.HasSitePermissions(_siteId, Main.PluginId))
 	        {
 	            Response.Write("<h1>未授权访问</h1>");
 	            Response.End();
