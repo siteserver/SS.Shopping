@@ -42,8 +42,8 @@
     <Reference Include="SiteServer.Plugin, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\SiteServer.Plugin.2.1.0\lib\net45\SiteServer.Plugin.dll</HintPath>
     </Reference>
-    <Reference Include="SS.Payment, Version=1.1.47.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SS.Payment.1.1.47-beta\lib\net452\SS.Payment.dll</HintPath>
+    <Reference Include="SS.Payment, Version=1.1.48.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SS.Payment.1.1.48\lib\net452\SS.Payment.dll</HintPath>
     </Reference>
     <Reference Include="ThoughtWorks.QRCode, Version=1.0.4778.30637, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ThoughtWorks.QRCode.1.1.0\lib\ThoughtWorks.QRCode.dll</HintPath>
