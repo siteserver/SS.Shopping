@@ -15,7 +15,9 @@ namespace SS.Shopping.Provider
             new TableColumn
             {
                 AttributeName = nameof(DeliveryInfo.Id),
-                DataType = DataType.Integer
+                DataType = DataType.Integer,
+                IsPrimaryKey = true,
+                IsIdentity = true
             },
             new TableColumn
             {
