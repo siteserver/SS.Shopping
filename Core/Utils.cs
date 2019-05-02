@@ -7,8 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SiteServer.Plugin;
-using SS.Shopping.Model;
-using SS.Shopping.Provider;
+using SS.Shopping.Core.Model;
 
 namespace SS.Shopping.Core
 {
@@ -96,15 +95,6 @@ namespace SS.Shopping.Core
             if (a == b) return true;
             if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b)) return false;
             return string.Equals(a.Trim().ToLower(), b.Trim().ToLower());
-        }
-
-        public static string GetTopSqlString(DatabaseType databaseType, string tableName, string columns, string whereAndOrder, int topN)
-        {
-            if (topN > 0)
-            {
-                return databaseType == DatabaseType.MySql ? $"SELECT {columns} FROM {tableName} {whereAndOrder} LIMIT {topN}" : $"SELECT TOP {topN} {columns} FROM {tableName} {whereAndOrder}";
-            }
-            return $"SELECT {columns} FROM {tableName} {whereAndOrder}";
         }
 
         public static object Eval(object dataItem, string name)
@@ -197,7 +187,7 @@ namespace SS.Shopping.Core
 
             if (addressInfo != null)
             {
-                var areaInfoList = AreaDao.GetAreaInfoList(deliveryInfo.Id);
+                var areaInfoList = Main.AreaRepository.GetAreaInfoList(deliveryInfo.Id);
                 foreach (var areaInfo in areaInfoList)
                 {
                     var cities = areaInfo.Cities.Split(',').ToList();
@@ -236,9 +226,9 @@ namespace SS.Shopping.Core
             return deliveryFee;
         }
 
-        public static string GetStateText(bool isPaied, string state)
+        public static string GetStateText(bool isPayed, string state)
         {
-            if (!isPaied) return "未支付";
+            if (!isPayed) return "未支付";
 
             if (EqualsIgnoreCase(state, nameof(OrderState.Done)))
             {
