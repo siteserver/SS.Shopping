@@ -13,7 +13,7 @@
     <Description>SiteServer CMS 购物插件</Description>
     <PackageLicense>GPL-3.0</PackageLicense>
     <PackageProjectUrl>https://github.com/siteserver/SS.Shopping</PackageProjectUrl>
-    <PackageIconUrl>https://www.siteserver.cn/docs/SS.Shopping/logo.svg</PackageIconUrl>
+    <PackageIconUrl>https://www.siteserver.cn/docs/ss/shopping/logo.svg</PackageIconUrl>
     <Copyright>Copyright © SiteServer CMS</Copyright>
     <PackageTags>SiteServer CMS Shopping Plugin</PackageTags>
     <RepositoryUrl>https://github.com/siteserver/SS.Shopping</RepositoryUrl>
@@ -23,8 +23,8 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
-    <PackageReference Include="SiteServer.Plugin" Version="2.3.6" />
-    <PackageReference Include="SS.Payment" Version="1.1.52" />
+    <PackageReference Include="SiteServer.Plugin" Version="2.3.11" />
+    <PackageReference Include="SS.Payment" Version="1.1.53" />
     <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
 
